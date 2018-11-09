@@ -10,7 +10,7 @@ Software and configuration that support TobiiPro's Cloud Services development.
   * [bootstrap your editor](doc/bootstrap-your-editor.md)
   * [working with a local `npm` dependency](doc/working-with-a-local-npm-dep.md)
   * [bootstrap AWS (console and CLI)](doc/bootstrap-aws.md)
-
+  * [bootstrapping a new developer macbook](doc/bootstrap-a-new-developer-macbook.md)
 * work
   * [working with `git` (and Github)](doc/working-with-git.md)
     * [new `git` (and Github) repositories](doc/working-with-git-new.md)
