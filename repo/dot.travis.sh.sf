@@ -43,7 +43,6 @@ function sf_transcrypt() {
 }
 
 function sf_pyenv_init() {
-    export PATH="~/.pyenv/bin:$PATH"
     eval "$(pyenv init -)"
 }
 
@@ -89,6 +88,15 @@ function sf_travis_run_install() {
 
 function sf_travis_run_script() {
     make all test
+}
+
+function sf_travis_run_before_cache_brew() {
+    which brew >/dev/null 2>&1 || return 0
+    brew cleanup
+}
+
+function sf_travis_run_before_cache() {
+    sf_travis_run_before_cache_brew
 }
 
 function sf_travis_run_before_deploy() {
