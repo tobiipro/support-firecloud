@@ -24,3 +24,10 @@ EOF
 brew_install "${BREW_FORMULAE}"
 unset BREW_FORMULAE
 echo_done
+
+# FIXME
+# remove autoconf
+# remove automake
+# remove parallel
+# remove pkg-config
+# remove watch
