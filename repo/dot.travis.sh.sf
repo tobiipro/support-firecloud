@@ -129,6 +129,30 @@ function sf_travis_run_script() {
     make all test
 }
 
+function sf_travis_run_after_success_pr() {
+    [ "${TRAVIS_EVENT_TYPE}" = "pull_request" ] || return 0
+
+    git merge-base --is-ancestor ${TRAVIS_PULL_REQUEST_SHA} ${TRAVIS_COMMIT} || {
+        echo_err "${TRAVIS_BRANCH} at ${TRAVIS_COMMIT} is not rebased on \
+${TRAVIS_PULL_REQUEST_BRANCH} at ${TRAVIS_PULL_REQUEST_SHA}"
+
+        echo
+        echo_info "Fast-forward merging strategy is enforced in pull requests, \
+so rebase ${TRAVIS_BRANCH} on origin/${TRAVIS_PULL_REQUEST_BRANCH} e.g."
+        echo_info "  git fetch"
+        echo_info "  git checkout ${TRAVIS_BRANCH}"
+        echo_info "  git rebase origin/${TRAVIS_PULL_REQUEST_BRANCH}"
+        echo_info "  git push -f"
+        echo
+
+        return 1
+    }
+}
+
+function sf_travis_run_after_success() {
+    sf_travis_run_after_success_pr
+}
+
 function sf_travis_run_before_deploy() {
     make snapshot
     make dist
