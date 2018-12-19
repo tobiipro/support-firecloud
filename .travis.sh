@@ -12,8 +12,9 @@ function travis_run_before_install() {
     echo_info "The commands bellow should not terminate the debug session"
     echo_info "after calling 'travis_run_before_install'..."
 
-    false
-    exit 1
+    # false  # will close tmate because of running with 'set -e', and exiting with non-zero code
+    # exit 1 # will close tmate because of exiting with non-zero code
+    exit     # will NOT close tmate
 }
 
 source "${SUPPORT_FIRECLOUD_DIR}/repo/dot.travis.sh.sf"
