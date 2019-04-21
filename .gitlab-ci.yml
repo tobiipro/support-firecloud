@@ -19,12 +19,18 @@
 
 
 stages:
-  - test
+  - test_install
+  - test_script
+  - test_cache
+  - test_after_success
+  - test_after_failure
+  - test_deploy
+  - test_after_script
 
 
 install_job:
   <<: *shared
-  stage: test
+  stage: test_install
   before_script:
     - ./.ci.sh before_install
   script:
@@ -34,7 +40,7 @@ script_job:
   <<: *shared
   dependencies:
     - install_job
-  stage: test
+  stage: test_script
   before_script:
     - ./.ci.sh before_script
   script:
@@ -44,7 +50,7 @@ cache_job:
   <<: *shared
   dependencies:
     - script_job
-  stage: test
+  stage: test_cache
   before_script:
     - ./.ci.sh before_cache
   script:
@@ -56,7 +62,7 @@ after_success_job:
   <<: *shared
   dependencies:
     - cache_job
-  stage: test
+  stage: test_after_success
   script:
     - ./.ci.sh after_success
   allow_failure: true
@@ -66,7 +72,7 @@ after_failure_job:
   <<: *shared
   dependencies:
     - script_job
-  stage: test
+  stage: test_after_failure
   script:
     - ./.ci.sh after_failure
   allow_failure: true
@@ -76,7 +82,7 @@ deploy_job:
   <<: *shared
   dependencies:
     - after_success_job
-  stage: test
+  stage: test_deploy
   before_script:
     - ./.ci.sh before_deploy
   script:
@@ -92,7 +98,7 @@ after_script_job:
   dependencies:
     - after_success_job
     - after_failure_job
-  stage: test
+  stage: test_after_script
   script:
     - ./.ci.sh after_script
   allow_failure: true
