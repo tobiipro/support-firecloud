@@ -48,7 +48,7 @@ cache_job:
   before_script:
     - ./.ci.sh before_cache
   script:
-    - true
+    - 'true'
   allow_failure: true
   when: on_success
 
