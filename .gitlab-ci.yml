@@ -1,4 +1,4 @@
-aliases:
+.aliases:
   - &shared
     only:
       - f/anu-gitlab-ci
