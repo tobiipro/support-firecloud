@@ -8,7 +8,7 @@ maintainer      Andrei Neculau <andrei.neculau@tobii.com>
 
 # sudo
 run             apt-get update
-run             apt-get install -y sudo
+run             apt-get install -y apt-utils sudo
 run             rm -rf /var/lib/apt/lists/*
 
 # bootstrap
