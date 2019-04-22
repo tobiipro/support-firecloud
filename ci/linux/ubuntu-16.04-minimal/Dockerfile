@@ -8,12 +8,9 @@ maintainer      Andrei Neculau <andrei.neculau@tobii.com>
 
 # misc
 run             apt-get update
-# apt-utils
 arg             DEBIAN_FRONTEND=noninteractive
 run             apt-get install -y apt-utils
-# sudo
 run             apt-get install -y sudo
-# misc
 run             rm -rf /var/lib/apt/lists/*
 
 # bootstrap
