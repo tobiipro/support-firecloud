@@ -1,6 +1,6 @@
 .aliases:
   - &shared
-    image: ubuntu:16.04
+    image: gitlab/gitlab-runner:latest
     only:
       - f/anu-gitlab-ci
     cache:
