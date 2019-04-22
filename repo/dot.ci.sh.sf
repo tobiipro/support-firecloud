@@ -327,7 +327,7 @@ EOF
     CI_REPO_SLUG=${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
     CI_IS_PR=$([[ -n "${CIRCLE_PR_NUMBER:-}" || -n "${CIRCLE_PULL_REQUEST:-}" ]] && echo true || echo false)
     CI_IS_CRON=${CI_IS_CRON:-} # needs to come from .circleci/config.yml
-    export USER=$(whoami)
+    export USER=$(whoami) # linuxbrew needs $USER
 }
 
 [[ "${GITLAB_CI:-}" != "true" ]] || {
@@ -337,7 +337,7 @@ EOF
     CI_REPO_SLUG=${CI_PROJECT_PATH}
     CI_IS_PR=$([[ -n "${CI_MERGE_REQUEST_ID:-}" ]] && echo true || echo false)
     CI_IS_CRON=$([[ "${CI_PIPELINE_SOURCE}" = "schedule" ]] && echo true || echo false)
-    export USER=$(whoami)
+    export USER=$(whoami) # linuxbrew needs $USER
 }
 
 [[ -z "$*" ]] || sf_ci_run $@
