@@ -18,6 +18,7 @@ apt_install() {
 }
 
 echo_do "aptitude: Updating..."
+apt-get update || true
 apt_install "software-properties-common"
 apt-add-repository -y ppa:git-core/ppa
 apt-get update
