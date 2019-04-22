@@ -1,6 +1,6 @@
 .aliases:
   - &shared
-    image: docker:latest
+    image: ubuntu:16.04
     only:
       - f/anu-gitlab-ci
     cache:
