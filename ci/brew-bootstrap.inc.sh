@@ -14,6 +14,7 @@ case $(uname -s) in
         ;;
     Linux)
         echo_do "brew: Installing linuxbrew..."
+        export USER=$(whoami)
         </dev/null sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
         echo_done
 
