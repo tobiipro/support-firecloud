@@ -6,13 +6,19 @@
 from            ubuntu:16.04
 maintainer      Andrei Neculau <andrei.neculau@tobii.com>
 
-# misc
-run             apt-get update
+# generic deps
 arg             DEBIAN_FRONTEND=noninteractive
-arg             APTGET_INSTALL apt-get install -y --no-install-recommends
+arg             APTGET_INSTALL="apt-get install -y --no-install-recommends"
+run             apt-get update -y --fix-missing
+run             ${APTGET_INSTALL} apt-transport-https
 run             ${APTGET_INSTALL} apt-utils
-run             ${APTGET_INSTALL} sudo
+run             ${APTGET_INSTALL} software-properties-common python-software-properties ca-certificates
+
+# sf deps
 run             ${APTGET_INSTALL} python-minimal
+run             ${APTGET_INSTALL} sudo
+
+# cleanup
 run             rm -rf /var/lib/apt/lists/*
 
 # bootstrap
