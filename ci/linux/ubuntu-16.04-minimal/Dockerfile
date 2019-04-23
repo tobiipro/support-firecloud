@@ -21,6 +21,13 @@ run             ${APTGET_INSTALL} sudo
 # cleanup
 run             rm -rf /var/lib/apt/lists/*
 
+# switch to non-root ci user
+# run             useradd -m -s /bin/bash ci
+# run             usermod -aG sudo ci
+run             useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 ubuntu
+user            ubuntu
+workdir         /home/ubuntu
+
 # bootstrap
 # build context is GIT_ROOT
 add             . /support-firecloud
