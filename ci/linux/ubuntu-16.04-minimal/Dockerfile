@@ -9,8 +9,10 @@ maintainer      Andrei Neculau <andrei.neculau@tobii.com>
 # misc
 run             apt-get update
 arg             DEBIAN_FRONTEND=noninteractive
-run             apt-get install -y apt-utils
-run             apt-get install -y sudo
+arg             APTGET_INSTALL apt-get install -y --no-install-recommends
+run             ${APTGET_INSTALL} apt-utils
+run             ${APTGET_INSTALL} sudo
+run             ${APTGET_INSTALL} python-minimal
 run             rm -rf /var/lib/apt/lists/*
 
 # bootstrap
