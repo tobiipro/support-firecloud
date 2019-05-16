@@ -34,11 +34,7 @@ deps-npm-unmet-peer:
 .PHONY: deps-npm
 deps-npm:
 	$(eval NPM_LOGS_DIR := $(shell $(NPM) config get cache)/_logs)
-	$(NPM) install || { \
-		$(CAT) $(NPM_LOGS_DIR)/`ls -t $(NPM_LOGS_DIR) | $(HEAD) -1` | \
-			$(GREP) -q "No matching version found for" && \
-			$(NPM) install; \
-	}
+	$(NPM) install
 	if [[ -x node_modules/babel-preset-firecloud/npm-install-peer-dependencies ]]; then \
 		node_modules/babel-preset-firecloud/npm-install-peer-dependencies; \
 	fi
