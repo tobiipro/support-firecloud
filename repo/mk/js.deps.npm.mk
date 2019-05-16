@@ -49,7 +49,7 @@ ifeq ($(CI),true)
 	}
 endif
 	$(NPM) prune
-	[[ -f "package-lock.json" ]] || { \
+	$(GIT) ls-files --error-unmatch "package-lock.json" || { \
 		$(CAT) package.json | \
 			$(JQ)  ".dependencies + .devDependencies" | \
 			$(JQ) "to_entries" | \
@@ -65,7 +65,7 @@ endif
 deps-npm-prod:
 	$(NPM) install --production
 	$(NPM) prune --production
-	[[ -f "package-lock.json" ]] || { \
+	$(GIT) ls-files --error-unmatch "package-lock.json" || { \
 		$(CAT) package.json | \
 			$(JQ)  ".dependencies" | \
 			$(JQ) "to_entries" | \
