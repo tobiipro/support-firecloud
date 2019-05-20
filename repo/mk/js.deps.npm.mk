@@ -78,20 +78,28 @@ deps-npm-prod:
 	$(NPM) list --depth=0 || $(MAKE) deps-npm-unmet-peer
 
 
-# the audit can be ignored by adding to the Makefile:
-# SF_DEPS_TARGETS := $(filter-out deps-npm-audit,$(SF_DEPS_TARGETS))
-
 .PHONY: deps-npm-audit
 deps-npm-audit:
 	$(ECHO_DO) "Auditing package.json..."
 	$(GIT) ls-files --error-unmatch "package-lock.json" || {
+		$(ECHO_INFO) "Creating intermediary package-lock.json needed by 'npm audit'..."; \
 		$(RM) package-lock.json
 		$(NPM) install --package-lock-only
 	}
 	$(NPM) audit || { \
 		$(NPM) audit fix; \
-		$(GIT) ls-files --error-unmatch "package-lock.json" || $(RM) package-lock.json; \
+		$(GIT) ls-files --error-unmatch "package-lock.json" || { \
+			$(ECHO_INFO) "Deleting intermediary package-lock.json needed by 'npm audit'..."; \
+			$(RM) package-lock.json; \
+		} \
+		$(ECHO_ERR) "'npm audit' found issues."; \
+		$(ECHO_INFO) "If you cannot address the audit issues,"; \
+		$(ECHO_INFO) "you can temporarily skip 'npm audit', by adding to your Makefile:"; \
+		$(ECHO_INFO) "SF_DEPS_TARGETS := \$$(filter-out deps-npm-audit,\$$(SF_DEPS_TARGETS))"; \
 		exit 1; \
 	}
-	$(GIT) ls-files --error-unmatch "package-lock.json" || $(RM) package-lock.json
+	$(GIT) ls-files --error-unmatch "package-lock.json" || { \
+		$(ECHO_INFO) "Deleting intermediary package-lock.json needed by 'npm audit'..."; \
+		$(RM) package-lock.json; \
+	}
 	$(ECHO_DONE)
