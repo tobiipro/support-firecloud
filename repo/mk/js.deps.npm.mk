@@ -35,7 +35,7 @@ deps-npm-unmet-peer:
 .PHONY: deps-npm
 deps-npm:
 	$(eval NPM_LOGS_DIR := $(shell $(NPM) config get cache)/_logs)
-	$(NPM) install
+	$(NPM) install --no-audit
 	if [[ -x node_modules/babel-preset-firecloud/npm-install-peer-dependencies ]]; then \
 		node_modules/babel-preset-firecloud/npm-install-peer-dependencies; \
 	fi
@@ -64,7 +64,7 @@ endif
 
 .PHONY: deps-npm-prod
 deps-npm-prod:
-	$(NPM) install --production
+	$(NPM) install --no-audit --production
 	$(NPM) prune --production
 	$(GIT) ls-files --error-unmatch "package-lock.json" || { \
 		$(CAT) package.json | \
@@ -84,7 +84,7 @@ deps-npm-audit:
 	$(GIT) ls-files --error-unmatch "package-lock.json" 2>/dev/null || { \
 		$(ECHO_INFO) "Creating intermediary package-lock.json needed by 'npm audit'..."; \
 		$(RM) package-lock.json; \
-		$(NPM) install --package-lock-only 2>/dev/null; \
+		$(NPM) install --no-audit --package-lock-only 2>/dev/null; \
 	}
 	$(NPM) audit || { \
 		$(NPM) audit fix; \
