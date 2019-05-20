@@ -83,8 +83,8 @@ deps-npm-audit:
 	$(ECHO_DO) "Auditing package.json..."
 	$(GIT) ls-files --error-unmatch "package-lock.json" || {
 		$(ECHO_INFO) "Creating intermediary package-lock.json needed by 'npm audit'..."; \
-		$(RM) package-lock.json
-		$(NPM) install --package-lock-only
+		$(RM) package-lock.json; \
+		$(NPM) install --package-lock-only; \
 	}
 	$(NPM) audit || { \
 		$(NPM) audit fix; \
