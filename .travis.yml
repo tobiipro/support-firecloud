@@ -73,3 +73,10 @@ jobs:
       osx_image: xcode10.2
       env: CACHE_NAME=osx-xcode10.2-dev SF_CI_BREW_INSTALL=dev
       if: type IN (push, cron)
+
+    - stage: test
+      name: "Windows Server (version 1803) with minimal brew"
+      os: windows
+      language: minimal
+      env: V=1 CACHE_NAME=windows-minimal SF_CI_BREW_INSTALL=minimal
+      # if: type IN (push, cron)
