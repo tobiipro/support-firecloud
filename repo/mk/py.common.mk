@@ -11,6 +11,8 @@ SF_PATH_FILES_IGNORE := \
 	$(SF_PATH_FILES_IGNORE) \
 	-e "^Pipfile$$" \
 	-e "/Pipfile$$" \
+	-e "[a-z0-9_]\+\.txt$$" \
+	-e "\.[a-z0-9_]\+$$" \
 
 PKG_NAME := unknown # FIXME
 PKG_VSN := 0.0.0 # FIXME
