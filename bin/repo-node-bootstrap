@@ -81,13 +81,6 @@ ARTIFACT=.eslintrc.js
     echo_info "Make sure to edit ${ARTIFACT} in order to supply the required info."
 }
 
-ARTIFACT=.npmrc
-[[ -e ${ARTIFACT} ]] || {
-    ln -s ${SUPPORT_FIRECLOUD_DIR_REL}/repo/dot.npmrc ${ARTIFACT}
-    ARTIFACTS="${ARTIFACTS}\\n${ARTIFACT}"
-    echo_info "Symlinked ${ARTIFACT}."
-}
-
 ARTIFACT=Makefile
 [[ -e ${ARTIFACT} ]] || {
     cp ${SUPPORT_FIRECLOUD_DIR_REL}/repo/Makefile.node ${ARTIFACT}
