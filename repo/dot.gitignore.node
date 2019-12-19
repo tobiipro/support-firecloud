@@ -3,5 +3,6 @@
 /coverage/
 /dist/
 /lib/
+/package-lock.json
 /snapshot.dir/
 /snapshot.zip

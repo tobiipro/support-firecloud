@@ -65,6 +65,7 @@ deps-npm-unmet-peer:
 .PHONY: deps-npm
 deps-npm:
 	$(eval NPM_LOGS_DIR := $(shell $(NPM) config get cache)/_logs)
+	$(GIT_LS) --error-unmatch package-lock.json || $(RM) package-lock.json
 	$(NPM) install || { \
 		$(CAT) $(NPM_LOGS_DIR)/`ls -t $(NPM_LOGS_DIR) | $(HEAD) -1` | \
 			$(GREP) -q "No matching version found for" && \
@@ -98,6 +99,7 @@ endif
 
 .PHONY: deps-npm-prod
 deps-npm-prod:
+	$(GIT_LS) --error-unmatch package-lock.json || $(RM) package-lock.json
 	$(NPM) install --production
 	$(NPM) prune --production
 	[[ -f "package-lock.json" ]] || { \
