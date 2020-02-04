@@ -24,7 +24,7 @@ then
     exit 0
 fi
 
-if [ ${EUID} -neq 0 ]
+if [ "${EUID}" != "0" ]
 then
     # Restart this shell script as root.
     sudo ${BASH_SOURCE[0]}
