@@ -38,8 +38,8 @@ fi
 # Execute the os specific boostrap process.
 ${SUPPORT_FIRECLOUD_DIR}/ci/${OS}/bootstrap
 
-# Upgrade to homebrew's bash, if using system bash and installing using sudo.
-if [ "${SHELL:-}" = "/bin/bash" ]  && [ "${SF_USE_SUDO:-true}" = "true" ]
+# Check if running an old bash and offer to upgrade users login shell.
+if [ "${SHELL:-}" = "/bin/bash" ]
 then
     ${SUPPORT_FIRECLOUD_DIR}/bin/use-homebrew-bash
 fi

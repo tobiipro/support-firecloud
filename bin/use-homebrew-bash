@@ -4,16 +4,20 @@ set -euo pipefail
 SUPPORT_FIRECLOUD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source ${SUPPORT_FIRECLOUD_DIR}/sh/common.inc.sh
 
-HOMEBREW_BASH=$(brew --prefix)/bin/bash
-echo "       Your current shell is ${SHELL}."
-echo "[Q   ] Do you want to upgrade to homebrew's bash at ${HOMEBREW_BASH} ?"
-echo "       Press ENTER to Continue."
-echo "       Press s to Skip."
-read -p "" -n 1
+if [[ "$BASH_VERSION" = 3.* ]]
+then
+   HOMEBREW_BASH=$(brew --prefix)/bin/bash
+   echo "       Your current shell is ${SHELL} which is an old version of bash."
+   echo "[Q   ] Do you want to upgrade to homebrew's bash 5 at ${HOMEBREW_BASH} ?"
+   echo "       Press ENTER to Continue."
+   echo "       Press s to Skip."
+   read -p "" -n 1
 
-[[ "${REPLY}" != "s" ]] || exit 0
+   [[ "${REPLY}" != "s" ]] || exit 0
 
-grep -q "${HOMEBREW_BASH}" /etc/shells || {
-    $SUDO bash -c "echo ${HOMEBREW_BASH} >>/etc/shells"
-}
-chsh -s ${HOMEBREW_BASH}
+   grep -q "${HOMEBREW_BASH}" /etc/shells || {
+       sudo bash -c "echo ${HOMEBREW_BASH} >>/etc/shells"
+   }
+
+   chsh -s ${HOMEBREW_BASH}
+fi
