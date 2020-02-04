@@ -1,13 +1,35 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-[ ${EUID} -eq 0 ] || {
-    sudo ${BASH_SOURCE[0]}
-    exit 0
-}
-
 SUPPORT_FIRECLOUD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source ${SUPPORT_FIRECLOUD_DIR}/sh/common.inc.sh
+
+DPKGS="$(cat <<-EOF
+bash
+bsdmainutils
+build-essential
+curl
+file
+git
+python-minimal
+rsync
+uuid-runtime
+EOF
+)"
+
+if [ "${SF_USE_SUDO:-}" = "false" ]
+then
+    echo Not using sudo, so please make sure these packages are installed by executing:
+    echo sudo apt install $DPKGS
+    exit 0
+fi
+
+if [ ${EUID} -neq 0 ]
+then
+    # Restart this shell script as root.
+    sudo ${BASH_SOURCE[0]}
+    exit 0
+fi
 
 function apt_update() {
     apt-get update -y --fix-missing 2>&1 || {
@@ -51,18 +73,6 @@ dpkg-reconfigure --frontend=noninteractive locales
 
 # Basic
 echo_do "aptitude: Installing basic packages..."
-DPKGS="$(cat <<-EOF
-bash
-bsdmainutils
-build-essential
-curl
-file
-git
-python-minimal
-rsync
-uuid-runtime
-EOF
-)"
 apt_install "${DPKGS}"
 echo_done
 

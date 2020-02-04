@@ -2,17 +2,42 @@
 set -euo pipefail
 
 CI=${CI:-}
-[[ "${CI}" != "1" ]] || CI=true
+
+if [ "${CI}" = "1" ]
+then
+    CI=true
+fi
 
 V=${V:-${VERBOSE:-}}
 VERBOSE=${V}
-[[ "${VERBOSE}" != "1" ]] || VERBOSE=true
 
-# [[ "${CI}" != "true" ]] || {
-#     # VERBOSE=true
-# }
+if [ "${VERBOSE}" = "1" ]
+then
+    VERBOSE=true
+fi
 
-[[ ${VERBOSE} != true ]] || set -x
+if [ "${VERBOSE}" = "true" ]
+then
+    set -x
+fi
+
+if [ "${SF_USE_SUDO:-}" = "false" ]
+then
+    # The user has exported SF_USE_SUDO=false to prevent
+    # the bootstrap, deps and build process to use sudo.
+    export SUDO=sf_nosudo
+else
+    export SUDO=sudo
+fi
+
+sf_nosudo () {
+    echo sudo called, but should not have been!--------
+    echo "$@"
+    echo :---------------------------------------------
+    exit 1
+}
+
+export -f sf_nosudo
 
 ARCH=$(uname -m)
 ARCH_BIT=$(uname -m | grep -q "x86_64" && echo "64" || echo "32")
@@ -28,12 +53,14 @@ GIT_REMOTE=$(git config branch.${GIT_BRANCH}.remote 2>/dev/null || true)
 GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || true)
 GIT_TAGS=$(git describe --exact-match --tags HEAD 2>/dev/null || true)
 
-[[ "${CI}" != "true" ]] || {
-    [[ -z "${TRAVIS_BRANCH:-}" ]] || {
+if [ "${CI}" = "true" ]
+then
+    if [ -n "${TRAVIS_BRANCH:-}" ]
+    then
         GIT_BRANCH=${TRAVIS_BRANCH}
         GIT_BRANCH_SHORT=$(basename ${TRAVIS_BRANCH})
-    }
+    fi
 
     HOMEBREW_NO_ANALYTICS=1
     HOMEBREW_NO_AUTO_UPDATE=1
-}
+fi

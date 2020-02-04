@@ -1,30 +1,48 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SUPPORT_FIRECLOUD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export SUPPORT_FIRECLOUD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# Reset and upgrade SF
 cd ${SUPPORT_FIRECLOUD_DIR}
-git reset
-git stash --all
-git checkout master
-git fetch
-git reset --hard origin/master
-git clean -xdf .
+
+# Resetting the support_firecloud directory
+# if the git repo is on master and only on master.
+# A development branch will therefore not be reset.
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+if [ "${BRANCH_NAME}" = "master" ]
+then
+    git reset
+    git stash --all
+    git checkout master
+    git fetch
+    git reset --hard origin/master
+    git clean -xdf .
+fi
 
 # Bootstrap OS
 OS=$(uname | tr "[A-Z]" "[a-z]")
 
-sudo true || {
-    >&2 echo "[ERROR] You need local admin rights to properly bootstrap." \
-    "If you don't have local admin rights, try contacting the IT department."
-    exit 1
-}
+# Check sudo permissions if using sudo.
+if [ "${SF_USE_SUDO:-true}" = "true" ]
+then
+    echo "Enter your sudo password for bootstrap."
+    sudo true
+    if [ "$?" != "0" ]
+    then
+        >&2 echo "[ERROR] You need local admin rights to properly bootstrap." \
+            "If you don't have local admin rights, try contacting the IT department."
+        exit 1
+    fi
+fi
 
+# Execute the os specific boostrap process.
 ${SUPPORT_FIRECLOUD_DIR}/ci/${OS}/bootstrap
 
-# Upgrade to homebrew's bash, if using system bash
-[[ "${SHELL:-}" != "/bin/bash" ]] || ${SUPPORT_FIRECLOUD_DIR}/bin/use-homebrew-bash
+# Upgrade to homebrew's bash, if using system bash and installing using sudo.
+if [ "${SHELL:-}" = "/bin/bash" ]  && [ "${SF_USE_SUDO:-true}" = "true" ]
+then
+    ${SUPPORT_FIRECLOUD_DIR}/bin/use-homebrew-bash
+fi
 
 # User feedback
 echo

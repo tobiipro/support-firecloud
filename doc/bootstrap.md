@@ -84,6 +84,8 @@ All common system-wide dependencies can be installed by running
 **NOTE** If the bootstrap script above didn't finish by printing `Restart your shell, and you're good to go.`,
 then you know the script has failed while executing.
 
+**NOTE** You can bootstrap without using sudo by exporting `export SF_USE_SUDO=false` before running bootstrap.
+
 **IMPORTANT. THE ONLY MANUAL STEP**
 is to append to your `~/.bashrc` (or `~/.bash_profile`), `~/.zshrc`, etc.:
 

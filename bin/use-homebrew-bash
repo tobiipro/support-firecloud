@@ -14,6 +14,6 @@ read -p "" -n 1
 [[ "${REPLY}" != "s" ]] || exit 0
 
 grep -q "${HOMEBREW_BASH}" /etc/shells || {
-    sudo bash -c "echo ${HOMEBREW_BASH} >>/etc/shells"
+    $SUDO bash -c "echo ${HOMEBREW_BASH} >>/etc/shells"
 }
 chsh -s ${HOMEBREW_BASH}
