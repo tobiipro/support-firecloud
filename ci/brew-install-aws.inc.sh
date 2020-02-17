@@ -2,8 +2,9 @@
 set -euo pipefail
 
 echo_do "brew: Installing AWS utils..."
+# Install awscli version 1.17.10  (avoid version 2 for a while)
 BREW_FORMULAE="$(cat <<-EOF
-awscli
+https://raw.githubusercontent.com/Homebrew/homebrew-core/a2d256d68d6e0d69fcbe5bc12272a6b57807a363/Formula/awscli.rb
 awslogs
 EOF
 )"
