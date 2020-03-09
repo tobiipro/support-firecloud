@@ -2,6 +2,7 @@ export SUPPORT_FIRECLOUD_DIR := $(abspath $(shell dirname $(lastword $(MAKEFILE_
 include $(SUPPORT_FIRECLOUD_DIR)/repo/cfn/inc.mk
 
 STACK_DIR ?= $(MAKE_PATH)/$(STACK_STEM)
+ENV_NAME ?=
 STACK_NAME ?= $(patsubst env-%,$(ENV_NAME)-%,$(STACK_STEM))
 
 # An S3 url to interact with temporary artifats
