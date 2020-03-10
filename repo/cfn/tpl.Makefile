@@ -4,6 +4,11 @@ include $(SUPPORT_FIRECLOUD_DIR)/repo/cfn/inc.mk
 STACK_DIR ?= $(MAKE_PATH)/$(STACK_STEM)
 ENV_NAME ?=
 STACK_NAME ?= $(patsubst env-%,$(ENV_NAME)-%,$(STACK_STEM))
+ifeq ($(ENV_NAME),)
+ifneq ($(STACK_NAME),$(STACK_STEM))
+$(error STACK_STEM=$(STACK_STEM) references and environment, but no ENV_NAME given.)
+endif
+endif
 
 # An S3 url to interact with temporary artifats
 # e.g. s3://example/path
