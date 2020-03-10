@@ -20,7 +20,7 @@ function sf_run_docker_ci_image() {
         --env USER=$(whoami) \
         --env-file <([[ "${TRAVIS:-}" != "true" ]] || ${SUPPORT_FIRECLOUD_DIR}/bin/travis-get-env-vars) \
         --env-file <(printenv | grep -e "^TRAVIS") \
-        --volume ${MOUNT_DIR}:${MOUNT_DIR} \
+        --volume ${MOUNT_DIR}:${MOUNT_DIR}:cached \
         --privileged \
         --network=host \
         --ipc=host \
