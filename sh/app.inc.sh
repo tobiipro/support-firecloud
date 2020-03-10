@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-${GLOBAL_AWS_REGION}}
-export AWS_REGION=${AWS_REGION:-${AWS_DEFAULT_REGION}}
 
 [[ ! -x "${GIT_ROOT}/bin/get-env-name" ]] || ENV_NAME=${ENV_NAME:-$(${GIT_ROOT}/bin/get-env-name)}
 
@@ -31,7 +29,8 @@ function app_assume_aws_credentials() {
         AWS_VAR=${PREFIX_AWS_VAR/#${AWS_ACCOUNT_PREFIX}_/}
         export eval "${AWS_VAR}=${!PREFIX_AWS_VAR}"
     done
-    export AWS_REGION=${AWS_REGION:-${GLOBAL_AWS_REGION}}
+    export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-${GLOBAL_AWS_REGION}}
+    export AWS_REGION=${AWS_REGION:-${AWS_DEFAULT_REGION}}
     echo_done
 }
 
