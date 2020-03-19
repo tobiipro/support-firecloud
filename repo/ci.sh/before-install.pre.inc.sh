@@ -21,6 +21,7 @@ function sf_run_docker_ci_image() {
         --env-file <([[ "${TRAVIS:-}" != "true" ]] || ${SUPPORT_FIRECLOUD_DIR}/bin/travis-get-env-vars) \
         --env-file <(printenv | grep -e "^TRAVIS") \
         --volume ${MOUNT_DIR}:${MOUNT_DIR}:cached \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
         --privileged \
         --network=host \
         --ipc=host \
