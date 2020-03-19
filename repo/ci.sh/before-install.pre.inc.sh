@@ -90,6 +90,12 @@ function sf_run_docker_ci_image() {
         echo_done
     fi
 
+    # make sure the user has access to the exposed docker.sock
+    echo_do "Modifying permissions of exposed docker.sock..."
+    exe docker exec -it -u root ${CONTAINER_NAME} \
+        chmod 666 /var/run/docker.sock
+    echo_done
+
     # if ${MOUNT_DIR} is under ${HOME}, make sure ${HOME} is writeable
     # to allow for special folders/files e.g. ~/.cache to be accessible for writing
     echo_do "Taking ownership over ${HOME}..."
