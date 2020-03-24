@@ -21,6 +21,7 @@ function sf_run_docker_ci_image() {
         --env-file <([[ "${TRAVIS:-}" != "true" ]] || ${SUPPORT_FIRECLOUD_DIR}/bin/travis-get-env-vars) \
         --env-file <(printenv | grep -e "^TRAVIS") \
         --volume ${MOUNT_DIR}:${MOUNT_DIR}:cached \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
         --privileged \
         --network=host \
         --ipc=host \
@@ -88,6 +89,12 @@ function sf_run_docker_ci_image() {
             chown -R $(id -u):$(id -g) /home/linuxbrew
         echo_done
     fi
+
+    # make sure the user has access to the exposed docker.sock
+    echo_do "Modifying permissions of exposed docker.sock..."
+    exe docker exec -it -u root ${CONTAINER_NAME} \
+        chmod 666 /var/run/docker.sock
+    echo_done
 
     # if ${MOUNT_DIR} is under ${HOME}, make sure ${HOME} is writeable
     # to allow for special folders/files e.g. ~/.cache to be accessible for writing
