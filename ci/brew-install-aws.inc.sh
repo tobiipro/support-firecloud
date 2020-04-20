@@ -2,13 +2,8 @@
 set -euo pipefail
 
 echo_do "brew: Installing AWS utils..."
-BREW_FORMULAE="$(cat <<-EOF
-awscli
-awslogs
-EOF
-)"
-brew_install "${BREW_FORMULAE}"
-unset BREW_FORMULAE
+brew_install awscli
+brew install --build-from-source awslogs
 aws configure set s3.signature_version s3v4
 echo_done
 
