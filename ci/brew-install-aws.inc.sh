@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo_do "brew: Installing AWS utils..."
 BREW_FORMULAE="$(cat <<-EOF
-awscli
+awscli --build-from-source
 EOF
 )"
 brew_install "${BREW_FORMULAE}"
