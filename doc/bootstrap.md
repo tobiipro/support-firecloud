@@ -100,6 +100,8 @@ Restart your shell, and you're good to go.
 
 **NOTE** You can test that everything is fine by checking that running `echo $SF_DEV_INC_SH` prints `true`.
 
+**NOTE** If you use `zsh` (default in Mac OS since Catalina), you might want to also use [oh-my-zsh](https://ohmyz.sh/) which, apart from being useful in itself, should fix a shell error message `complete:13: command not found: compdef` otherwise appearing after this bootstrap.
+
 **NOTE** Repositories might require more system-wide dependencies.
 These are defined in a file called `Brewfile.inc.sh` within each repository.
 To install them, run `make bootstrap` inside the repository.
