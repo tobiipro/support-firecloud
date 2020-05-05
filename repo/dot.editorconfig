@@ -41,3 +41,11 @@ tab_width = 4
 
 [package.json]
 max_line_length = none
+
+[*.icns]
+max_line_length = none
+indent_size = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset
+end_of_line = unset
+indent_style = unset
