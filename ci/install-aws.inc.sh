@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "$OS" = "linux" ]] && [[ "$FORCE_BREW" != "true" ]]; then
+if [[ "$OS" = "linux" ]] && [[ "$FORCE_BREW:-" != "true" ]]; then
     echo_do "apt: Installing AWS utils..."
     apt_install awscli
     echo_done
