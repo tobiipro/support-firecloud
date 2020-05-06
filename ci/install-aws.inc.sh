@@ -7,12 +7,7 @@ if [[ "$OS" = "linux" ]] && [[ "$FORCE_BREW" != "true" ]]; then
     echo_done
 else
     echo_do "brew: Installing AWS utils..."
-    BREW_FORMULAE="$(cat <<-EOF
-    awscli
-    EOF
-    )"
-    brew_install "${BREW_FORMULAE}"
-    unset BREW_FORMULAE
+    brew_install awscli
     echo_done
 fi
 
