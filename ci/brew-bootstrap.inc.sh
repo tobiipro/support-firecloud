@@ -78,10 +78,12 @@ CI_CACHE_HOMEBREW_PREFIX_FULL=$(cd ${CI_CACHE_HOMEBREW_PREFIX} 2>/dev/null && pw
 unset HOMEBREW_PREFIX
 unset CI_CACHE_HOMEBREW_PREFIX
 
-[[ "${CI:-}" != "true" ]] || {
+if [[ "${CI:-}" = "true" ]]; then
+    # Install necessary dependencies when building in CI.
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-util.inc.sh
     brew_update
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-ci.inc.sh
-}
+    source ${SUPPORT_FIRECLOUD_DIR}/ci/install-aws.inc.sh
+fi
 
 source ${SUPPORT_FIRECLOUD_DIR}/sh/common.inc.sh
