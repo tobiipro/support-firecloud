@@ -18,7 +18,7 @@ branches:
 
 # 4. Bootstrap
 os: linux
-dist: xenial
+dist: bionic
 language: generic
 # addons:
 before_cache: ./.ci.sh before_cache

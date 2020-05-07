@@ -117,7 +117,7 @@ function sf_get_docker_ci_image() {
             RELEASE_ID=$(source /etc/os-release && echo ${ID})
             RELEASE_VERSION_CODENAME=$(source /etc/os-release && echo ${VERSION_CODENAME})
         }
-        SF_DOCKER_CI_IMAGE=tobiipro/sf-${RELEASE_ID:-ubuntu}-${RELEASE_VERSION_CODENAME:-xenial}-minimal
+        SF_DOCKER_CI_IMAGE=tobiipro/sf-${RELEASE_ID:-ubuntu}-${RELEASE_VERSION_CODENAME:-bionic}-minimal
     fi
     # if given a tobiipro/sf- image, but without a tag,
     # set the tag to the version of SF
