@@ -83,7 +83,7 @@ if [[ "${CI:-}" = "true" ]]; then
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-util.inc.sh
     brew_update
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-ci.inc.sh
-    source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-py.inc.sh
+    source ${SUPPORT_FIRECLOUD_DIR}/ci/install-py.inc.sh
     source ${SUPPORT_FIRECLOUD_DIR}/ci/install-aws.inc.sh
 fi
 
