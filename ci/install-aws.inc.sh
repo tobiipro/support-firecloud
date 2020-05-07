@@ -2,8 +2,8 @@
 set -euo pipefail
 
 if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
-    echo_do "apt: Installing AWS utils..."
-    apt_install awscli
+    echo_do "pip3: Installing AWS utils..."
+    pip3 install --upgrade awscli
     echo_done
 else
     echo_do "brew: Installing AWS utils..."
