@@ -11,7 +11,7 @@ function apt_update() {
 }
 
 function apt_install() {
-    apt-get install -y --force-yes $*
+    apt install -y $*
 }
 
 export CI=true
