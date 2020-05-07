@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
     echo_do "apt: Installing Python3..."
-    apt_install python3
+    apt_install python3 python3-pip
     echo_done
 else
     echo_do "brew: Installing Python packages..."
