@@ -5,6 +5,7 @@ if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
     echo_do "apt: Installing Python3..."
     apt_install python3
     apt_install python3-pip
+    apt_install python3-setuptools
     echo_done
 else
     echo_do "brew: Installing Python packages..."
