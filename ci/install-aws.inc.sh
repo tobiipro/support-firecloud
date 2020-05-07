@@ -20,5 +20,5 @@ aws configure set s3.signature_version s3v4
 # exe_and_grep_q "aws --version | head -1" "^aws-cli/2\\."
 exe_and_grep_q "aws --version | head -1" "^aws-cli/[12]\\."
 # check that we get a recent enough aws client.
-exe_and_grep q "aws cloudformation detect-stack-drift help | grep -o DRIFT | sort -u" "DRIFT"
+exe_and_grep_q "aws cloudformation detect-stack-drift help | grep -o DRIFT | sort -u" "DRIFT"
 echo_done
