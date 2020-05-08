@@ -59,6 +59,7 @@ build-essential
 curl
 file
 git
+groff
 python-minimal
 rsync
 uuid-runtime
