@@ -119,19 +119,10 @@ function sf_os() {
     kill ${WHILE_LOOP_PID} && trap " " EXIT
 }
 
-
-function sf_pyenv_init() {
-    if which pyenv >/dev/null 2>&1; then
-        eval "$(pyenv init -)"
-    fi
-}
-
-
 function sf_ci_run_before_install() {
     sf_private_submodules
     sf_transcrypt
     sf_os
-    sf_pyenv_init
 
     [[ "${CI_DEBUG_MODE:-}" != "true" ]] || {
         echo

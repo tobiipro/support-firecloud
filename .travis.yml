@@ -18,7 +18,7 @@ branches:
 
 # 4. Bootstrap
 # os: linux
-# dist: xenial
+# dist: bionic
 language: generic
 # addons:
 before_cache: ./.ci.sh before_cache
@@ -59,25 +59,11 @@ after_deploy: ./.ci.sh after_deploy
 jobs:
   include:
     - stage: test
-      name: "Linux Xenial 16.04 with minimal brew"
-      os: linux
-      dist: xenial
-      env: CACHE_NAME=linux-xenial-minimal SF_CI_BREW_INSTALL=minimal
-      if: type IN (push, cron, pull_request)
-
-    - stage: test
-      name: "Linux Xenial 16.04 with dev (common+) brew"
-      os: linux
-      dist: xenial
-      env: CACHE_NAME=linux-xenial-dev SF_CI_BREW_INSTALL=dev
-      if: type IN (push, cron)
-
-    - stage: test
       name: "Linux Bionic 18.04 with minimal brew"
       os: linux
       dist: bionic
       env: CACHE_NAME=linux-bionic-minimal SF_CI_BREW_INSTALL=minimal
-      if: type IN (push, cron)
+      if: type IN (push, cron, pull_request)
 
     - stage: test
       name: "Linux Bionic 18.04 with dev (common+) brew"

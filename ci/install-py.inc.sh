@@ -1,25 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo_do "brew: Installing Python packages..."
-BREW_FORMULAE="$(cat <<-EOF
-python
-pyenv
-EOF
-)"
-brew_install "${BREW_FORMULAE}"
-unset BREW_FORMULAE
-eval "$(pyenv init -)"
-mkdir -p ~/.pyenv/versions
-for f in $(brew --cellar python)/*; do
-    ln -sf $f ~/.pyenv/versions/
-done
-echo_done
+if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
+    echo_do "apt: Installing Python3..."
+    apt_install python3
+    apt_install python3-pip
+    apt_install python3-setuptools
+    echo_done
+else
+    echo_do "brew: Installing Python packages..."
+    brew_install python
+    echo_done
+fi
 
-echo_do "brew: Testing Python packages..."
+echo_do "python: Testing Python packages..."
 exe_and_grep_q "python3 --version 2>&1 | head -1" "^Python 3\\."
 exe_and_grep_q "pip3 --version | head -1" "^pip "
-exe_and_grep_q "pyenv --version | head -1" "^pyenv "
 echo_done
 
 # FIXME temporary fix

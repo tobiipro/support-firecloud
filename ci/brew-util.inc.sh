@@ -159,7 +159,7 @@ function apt_install() {
         [[ -n "${DPKG}" ]] || continue
 
         echo_do "aptitude: Installing ${DPKG}..."
-        ${SUDO} apt-get install -y --force-yes "${DPKG}"
+        ${SUDO} apt-get install -y "${DPKG}"
         echo_done
     done 3< <(echo "$@")
 }
