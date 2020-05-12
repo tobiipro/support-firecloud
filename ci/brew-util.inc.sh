@@ -6,36 +6,69 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_INSTALL_CLEANUP=1
 
 function brew_update() {
-    echo_do "brew: Updating..."
-    brew update
+    echo_info "brew_update(): Update...this will take a while..."
+    tmpfile=$(mktemp /tmp/brew-update.XXXXXX)
+    case "$" in
+    esac
+
+    if brew update > $tmpfile 2>&1
+    then
+        rm $tmpfile
+        echo_info "brew_update(): Update done."
+    else
+        cat $tmpfile
+        echo ERROR: Failed brew update.
+    fi
+    echo_do "brew: Listing outdated formulas..."
     brew outdated
     echo_done
 }
 
 function brew_upgrade() {
-    while read -u3 NAME; do
-        [[ -n "${NAME}" ]] || continue
-
-        # install any missing dependencies
+    while read -u3 NAME
+    do
+        if [[ -z "${NAME}" ]]
+        then
+            # Oups an empty name arrived, skip it.
+            continue
+        fi
+        echo_info "brew_upgrade(): ${NAME}"
+        echo_info "brew_upgrade(): Install any missing dependencies..."
         local MISSING="$(brew missing ${NAME})"
-        [[ -z "${MISSING}" ]] || brew install ${MISSING}
 
-        # link, if not already
-        if [[ "${CI:-}" != "true" ]]; then
-            brew link ${NAME} || true
-        else
-            brew link --force --overwrite ${NAME} || true
+        if [[ -n "${MISSING}" ]]
+        then
+            echo_info "brew_upgrade(): brew install missing ${MISSING}"
+            brew install ${MISSING}
         fi
 
-        # is it pinned?
-        brew list ${NAME} --pinned | grep -q "^${NAME}$" && continue || true
+        if [[ "${CI:-}" == "true" ]]
+        then
+            echo_info "brew_upgrade(): brew link --force --overwrite ${NAME}"
+            brew link --force --overwrite ${NAME} || true
+        else
+            echo_info "brew_upgrade(): brew link ${NAME}"
+            brew link ${NAME} || true
+        fi
 
-        # is it already up-to-date?
-        brew outdated ${NAME} >/dev/null 2>&1 || {
-            echo_do "brew: Upgrading ${NAME}..."
+        echo_info "brew_upgrade(): test if pinned ${NAME}"
+        local PINNED=$(brew list ${NAME} --pinned | grep -o "^${NAME}$" || true)
+        if [[ -n "$PINNED" ]]
+        then
+            # Do not upgrade if pinned.
+            echo_info "brew_upgrade(): Skipping upgrade of ${NAME} because it is pinned."
+            continue
+        fi
+
+        echo_info "brew_upgrade(): Test if outdated? ${NAME}"
+        if brew outdated ${NAME} >/dev/null 2>&1
+        then
+            echo_do "brew_upgrade(): Upgrading ${NAME}..."
             brew upgrade ${NAME}
             echo_done
-        }
+        else
+            echo_info "brew_upgrade(): No need to upgrade ${NAME}"
+        fi
     done 3< <(echo "$@")
 }
 

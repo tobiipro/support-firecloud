@@ -17,10 +17,23 @@ fi
 
 RAW_GUC_URL="https://raw.githubusercontent.com"
 
+BREW_UPDATED=false
+
 case $(uname -s) in
     Darwin)
         if [[ "${HAS_BREW_2}" = "true" ]]; then
-            brew update
+            echo_info "brew: Update...this will take a while..."
+            tmpfile=$(mktemp /tmp/brew-update.XXXXXX)
+
+            if brew update > $tmpfile 2>&1
+            then
+                BREW_UPDATED=true
+                rm $tmpfile
+                echo_info "brew: Update done."
+            else
+                cat $tmpfile
+                echo_info "ERROR: Failed brew update."
+            fi
         else
             echo_do "brew: Installing homebrew..."
             </dev/null ruby -e "$(curl -fqsS -L ${RAW_GUC_URL}/Homebrew/install/master/install)"
@@ -81,7 +94,10 @@ unset CI_CACHE_HOMEBREW_PREFIX
 if [[ "${CI:-}" = "true" ]]; then
     # Install necessary dependencies when building in CI.
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-util.inc.sh
-    brew_update
+    if [[ "$BREW_UPDATED" == "false" ]]
+    then
+        brew_update
+    fi
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-ci.inc.sh
     source ${SUPPORT_FIRECLOUD_DIR}/ci/install-py.inc.sh
     source ${SUPPORT_FIRECLOUD_DIR}/ci/install-aws.inc.sh

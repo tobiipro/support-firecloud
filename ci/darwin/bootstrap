@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "RUNNING: darwin/boostrap"
+
 SUPPORT_FIRECLOUD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source ${SUPPORT_FIRECLOUD_DIR}/sh/common.inc.sh
 
@@ -15,19 +17,26 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
     echo_info "SF_SKIP_COMMON_BOOTSTRAP=${SF_SKIP_COMMON_BOOTSTRAP}"
     echo_skip "ci/brew-bootstrap.inc.sh"
 else
+    echo_info "CALLING: ci/brew-bootstrap.inc.sh"
     source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-bootstrap.inc.sh
 fi
 
+echo_info "CALLING: ci/brew-util.inc.sh"
 source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-util.inc.sh
+echo_info "CALLING: brew_update"
 brew_update
+echo_info "CALLING: brew_brewfile_inc_sh"
 brew_brewfile_inc_sh
+echo_info "CALLING: brew_list"
 brew_list
+echo_info "DONE: brew_list"
 
-[[ "${CI:-}" != "true" ]] || {
+if [[ "${CI:-}" == "true" ]]
+then
     echo_do "Printenv..."
     printenv
     echo_done
-}
+fi
 
 # see https://github.com/Homebrew/brew/issues/5013
 hash -r
