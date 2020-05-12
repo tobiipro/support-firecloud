@@ -5,7 +5,7 @@ if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
     echo_do "pip3: Installing AWS utils..."
     pip3 install --upgrade awscli
     echo_info "pip3: Where did it install awscli?"
-    LOCATION=$(pip3 show $(pip3 list -v --format=columns | grep awsclit | cut -f 1 -d ' ') | grep Location)
+    LOCATION=$(pip3 show $(pip3 list -v --format=columns | grep awscli | cut -f 1 -d ' ') | grep Location)
     echo_info "pip3: awscli is stored in: ${LOCATION}"
     echo_done
 else

@@ -35,9 +35,14 @@ apt-add-repository -y ppa:git-core/ppa
 apt_update
 echo_done
 
+echo_info "apt: installing locales..."
 apt_install locales
+echo_do "apt: locale-gen..."
 locale-gen en_US en_US.UTF-8
+echo_done
+echo_do "bootstrap: dpkg-reconfigure --frontend=noninteractive locales"
 dpkg-reconfigure --frontend=noninteractive locales
+echo_done
 
 # improve date-time (ntp) sync
 (
