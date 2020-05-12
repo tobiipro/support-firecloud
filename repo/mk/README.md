@@ -70,7 +70,6 @@ The high-level colletions of pieces are as follows:
 * [node.common.mk](node.common.mk) - [js.common.mk](js.common.mk) + the "must have" for NodeJS repositories
   * [js.build.babel.mk](js.build.babel.mk)
 * [py.common.mk](py.common.mk) - [generic.common.mk](generic.common.mk) + the "must have" for Python repositories
-  * [py.deps.pipenv.mk](py.deps.pipenv.mk)
 
 **NOTE** It is only `*.common.mk` makefiles that can `include`. All others are atomic.
 
