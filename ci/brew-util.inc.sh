@@ -17,7 +17,8 @@ function brew_update() {
         echo_info "brew_update(): Update done."
     else
         cat $tmpfile
-        echo ERROR: Failed brew update.
+        echo_err ERROR: Failed brew update.
+        exit 1
     fi
     echo_do "brew: Listing outdated formulas..."
     brew outdated
@@ -44,11 +45,11 @@ function brew_upgrade() {
 
         if [[ "${CI:-}" == "true" ]]
         then
-            echo_info "brew_upgrade(): brew link --force --overwrite ${NAME}"
-            brew link --force --overwrite ${NAME} || true
+            echo_info "brew_upgrade(): brew linking ${NAME}"
+            exe brew link --force --overwrite ${NAME} || true
         else
-            echo_info "brew_upgrade(): brew link ${NAME}"
-            brew link ${NAME} || true
+            echo_info "brew_upgrade(): brew linking ${NAME}"
+            exe brew link ${NAME} || true
         fi
 
         echo_info "brew_upgrade(): test if pinned ${NAME}"

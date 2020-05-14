@@ -29,7 +29,7 @@ echo_info "CALLING: brew_brewfile_inc_sh"
 brew_brewfile_inc_sh
 echo_info "CALLING: brew_list"
 brew_list
-echo_info "DONE: brew_list"
+echo_info "DONE: darwin/bootstrap"
 
 if [[ "${CI:-}" == "true" ]]
 then
