@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo DockerScript: Configuring docker image through RUN command....
+
 function apt_update() {
     apt-get update -y --fix-missing 2>&1 || {
         # try to handle "Hash Sum mismatch" error
@@ -20,11 +22,15 @@ export DEBIAN_FRONTEND=noninteractive
 # export SF_DOCKER_CI_IMAGE_TAG= # --build-arg
 # export SF_CI_BREW_INSTALL= # --build-arg
 
+echo DockerScript: Running apt update and install...
+
 # DEPS
 apt_update
 apt_install apt-transport-https
 apt_install software-properties-common ca-certificates
 apt_install git openssl ssh-client sudo
+
+echo DockerScript: Create root .ssh dir...
 
 # SSH
 mkdir -p /root/.ssh
@@ -39,6 +45,8 @@ git config --global user.name "${SF_DOCKER_CI_IMAGE_NAME} ${SF_DOCKER_CI_IMAGE_T
 # GID UID
 GID_INDEX=999
 UID_INDEX=999
+
+echo DockerScript: Adding user sf...
 
 # NON-ROOT SUDO USER
 GID_INDEX=$((GID_INDEX + 1))
@@ -69,7 +77,14 @@ echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
     usermod -u 2000 sf
     groupmod -g 2000 sf
 
+    echo DockerScript: Running ./ci/linux/bootstrap as root...
+
     sudo --preserve-env -H -u sf ./ci/linux/bootstrap
+
+    echo DockerScript: Echo HOME=${HOME}
+    echo DockerScript: List dotlocal...
+    find ${HOME}/.local -type f || true
+    echo DockerSCript: List dotlocal done.
 
     # unhack
     # see https://github.com/docker/for-linux/issues/388
@@ -122,3 +137,12 @@ dir_clean /home/sf/.cache # linuxbrew cache
 git_dir_clean /support-firecloud
 # git_dir_clean /home/linuxbrew/.linuxbrew/Homebrew
 # git_dir_clean /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core
+
+echo DockerSCript: At end HOME=${HOME}
+echo DockerScript: Find aws...
+find / -type f -name aws || true
+echo DockerSCript: Find aws done
+echo DockerScript: Find .local ...
+find / -type d -name .local || true
+echo DockerSCript: Find .local done
+echo DockerSCript: Completed
