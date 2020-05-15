@@ -24,8 +24,8 @@ then
     # A virtualenv for the CI build is necessary so that installed python
     # packages like aws are stored inside the docker image at a common location.
     echo_do Creating virtualenv for CI build.
-    sudo mkdir -p /usr/local/support-firecloud/venv
-    sudo chown $(whoami) /usr/local/support-firecloud/venv
+    exe sudo mkdir -p /usr/local/support-firecloud/venv
+    exe sudo chown $(whoami) /usr/local/support-firecloud/venv
     exe python3 -m venv /usr/local/support-firecloud/venv
     echo_done
 fi
