@@ -20,6 +20,7 @@ function brew_update() {
         echo_err ERROR: Failed brew update.
         exit 1
     fi
+    echo_info "brew_update(): Completed."
     echo_do "brew: Listing outdated formulas..."
     brew outdated
     echo_done

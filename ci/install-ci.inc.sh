@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo_do "brew: Installing CI packages..."
-# 'findutils' provides 'xargs', because the OSX version has no 'xargs -r'
+if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]
+then
+    echo_do "apt: Installing CI packages..."
+    apt_install git
+    apt_install findutils
+    apt_install jq
+    apt_install rsync
+    echo_done
+else
+    echo_do "brew: Installing CI packages..."
+    # 'findutils' provides 'xargs', because the OSX version has no 'xargs -r'
 BREW_FORMULAE="$(cat <<-EOF
 git
 findutils
@@ -10,9 +19,10 @@ jq
 rsync
 EOF
 )"
-brew_install "${BREW_FORMULAE}"
-unset BREW_FORMULAE
-echo_done
+    brew_install "${BREW_FORMULAE}"
+    unset BREW_FORMULAE
+    echo_done
+fi
 
 echo_do "brew: Testing CI packages..."
 exe_and_grep_q "git --version | head -1" "^git version 2\\."
@@ -27,10 +37,15 @@ echo | xargs -r false || {
 }
 echo_done
 
-echo_do "brew: Unlink keg-only packages..."
+if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]
+then
+    echo_info "apt: No need to unlink keg-only packages."
+else
+    echo_do "brew: Unlink keg-only packages..."
 BREW_FORMULAE="$(brew info --json=v1 --installed | \
     jq -r 'map(select(.keg_only == true and .linked_keg != null)) | map(.name) | .[]')"
-echo "${BREW_FORMULAE}"
-echo -n "${BREW_FORMULAE}" | xargs -r -L1 brew unlink
-unset BREW_FORMULAE
-echo_done
+    echo "${BREW_FORMULAE}"
+    echo -n "${BREW_FORMULAE}" | xargs -r -L1 brew unlink
+    unset BREW_FORMULAE
+    echo_done
+fi
