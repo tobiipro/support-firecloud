@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${CI:-}" == "true" ]]
+then
+    source /usr/local/support-firecloud/venv/activate
+fi
+
 if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
     echo_do "pip3: Installing AWS utils..."
     pip3 install --upgrade awscli
