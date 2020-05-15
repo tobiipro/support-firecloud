@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ "${CI:-}" == "true" ]]
 then
-    source /usr/local/support-firecloud/venv/activate
+    source /usr/local/support-firecloud/venv/bin/activate
 fi
 
 if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then

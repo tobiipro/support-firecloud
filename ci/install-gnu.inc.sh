@@ -5,8 +5,20 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
     echo_info "brew: SF_SKIP_COMMON_BOOTSTRAP=${SF_SKIP_COMMON_BOOTSTRAP}"
     echo_skip "brew: Installing GNU packages..."
 else
-    echo_do "brew: Installing GNU packages..."
-    BREW_FORMULAE="$(cat <<-EOF
+    if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]
+    then
+        echo_do "apt: Installing GNU packages..."
+        apt_install coreutils
+        apt_install diffutils
+        apt_install findutils
+        apt_install gettext
+        apt_install tar
+        apt_install grep
+        apt_install gzip
+        echo_done
+    else
+        echo_do "brew: Installing GNU packages..."
+        BREW_FORMULAE="$(cat <<-EOF
 coreutils
 diffutils
 findutils
@@ -18,11 +30,12 @@ grep
 gzip
 EOF
 )"
-    brew_install "${BREW_FORMULAE}"
-    unset BREW_FORMULAE
-    echo_done
+        brew_install "${BREW_FORMULAE}"
+        unset BREW_FORMULAE
+        echo_done
+    fi
 
-    echo_do "brew: Testing GNU packages..."
+    echo_do "gnu: Testing GNU packages..."
     exe_and_grep_q "cat --version | head -1" "^cat (GNU coreutils) 8\\."
     exe_and_grep_q "diff --version | head -1" "^diff (GNU diffutils) 3\\."
     exe_and_grep_q "envsubst --version | head -1" "^envsubst (GNU gettext-runtime) 0.20\\."

@@ -1,13 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
+if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]
+then
     echo_info "brew: SF_SKIP_COMMON_BOOTSTRAP=${SF_SKIP_COMMON_BOOTSTRAP}"
     echo_skip "brew: Installing core packages..."
 else
-    echo_do "brew: Installing core packages..."
-    # 'findutils' provides 'xargs', because the OSX version has no 'xargs -r'
-    BREW_FORMULAE="$(cat <<-EOF
+    if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]
+    then
+        echo_do "apt: Installing core packages..."
+        apt_install curl
+        apt_install findutils
+        apt_install git
+        apt_install jq
+        apt_install make
+        apt_install rsync
+        apt_install unzip
+        apt_install zip
+
+        brew_install ${SUPPORT_FIRECLOUD_DIR}/priv/editorconfig-checker.rb
+        brew_install ${SUPPORT_FIRECLOUD_DIR}/priv/retry.rb
+        echo_done
+    else
+        echo_do "brew: Installing core packages..."
+        # 'findutils' provides 'xargs', because the OSX version has no 'xargs -r'
+        BREW_FORMULAE="$(cat <<-EOF
 ${SUPPORT_FIRECLOUD_DIR}/priv/editorconfig-checker.rb
 ${SUPPORT_FIRECLOUD_DIR}/priv/retry.rb
 bash
@@ -21,11 +38,12 @@ unzip
 zip
 EOF
 )"
-    brew_install "${BREW_FORMULAE}"
-    unset BREW_FORMULAE
-    echo_done
+        brew_install "${BREW_FORMULAE}"
+        unset BREW_FORMULAE
+        echo_done
+    fi
 
-    echo_do "brew: Testing core packages..."
+    echo_do "core: Testing core packages..."
     exe_and_grep_q "bash --version | head -1" "^GNU bash, version [^123]\\."
     exe_and_grep_q "curl --version | head -1" "^curl 7\\."
     exe_and_grep_q "editorconfig-checker --version | head -1" "^2\\."
