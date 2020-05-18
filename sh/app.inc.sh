@@ -3,6 +3,10 @@
 
 [[ ! -x "${GIT_ROOT}/bin/get-env-name" ]] || ENV_NAME=${ENV_NAME:-$(${GIT_ROOT}/bin/get-env-name)}
 
+# Add path to support-firecloud/venv/bin to find aws and other CI bootstrapped python tools.
+# The venv works without being activated, note that installations using pip3 ought to first active the venv.
+export PATH=$PATH:/usr/local/support-firecloud/venv/bin
+
 function app_get_snapshot() {
     # deprecated
     ${GIT_ROOT}/bin/get-snapshot
