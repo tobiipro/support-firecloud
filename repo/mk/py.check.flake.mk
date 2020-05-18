@@ -2,7 +2,7 @@
 # over SF_FLAKE_FILES (defaults to all committed and staged *.py files).
 # The 'check-flake' target is automatically added to the 'check' target via SF_CHECK_TARGETS.
 #
-# The flake8 executable is found via pipenv.
+# For CI builds the flake8 executable must be installed using pip3 in the Brewfile.
 # The arguments to the flake executable can be changed via FLAKE_ARGS.
 #
 # For convenience, specific files can be ignored
@@ -17,7 +17,9 @@
 
 SF_IS_TRANSCRYPTED ?= false
 
-FLAKE = $(PIPENV) run flake8
+# Expects flake8 to be in the path. This can be done by adding:
+# pip3 install flake8 in the Brewfile.
+FLAKE = flake8
 
 FLAKE_ARGS +=
 
