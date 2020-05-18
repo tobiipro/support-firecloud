@@ -6,7 +6,10 @@ SUPPORT_FIRECLOUD_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))/
 
 # ------------------------------------------------------------------------------
 
-PATH := $(PATH):$(SUPPORT_FIRECLOUD_DIR)/bin
+# Add path to <gitrepo>/support-firecloud/bin
+# Add path to support-firecloud/venv/bin to find aws and other CI bootsrapped python tools.
+# The venv works without being activated, note that installations using pip3 ought to first active the venv.
+PATH := $(PATH):$(SUPPORT_FIRECLOUD_DIR)/bin:/usr/local/support-firecloud/venv/bin
 export PATH
 
 CI_ECHO ?= $(SUPPORT_FIRECLOUD_DIR)/bin/ci-echo
