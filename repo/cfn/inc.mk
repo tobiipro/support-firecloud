@@ -3,8 +3,10 @@ include $(SUPPORT_FIRECLOUD_DIR)/repo/mk/core.clean.mk
 include $(SUPPORT_FIRECLOUD_DIR)/repo/mk/core.misc.transcrypt.mk
 include $(SUPPORT_FIRECLOUD_DIR)/repo/mk/core.misc.source-const-inc.mk
 
-# need access to node-esm
-PATH := $(PATH):$(SUPPORT_FIRECLOUD_DIR)/bin
+# Add path to <gitrepo>/support-firecloud/bin
+# Add path to support-firecloud/venv/bin to find aws and other CI bootsrapped python tools.
+# The venv works without being activated, note that installations using pip3 ought to first active the venv.
+PATH := $(PATH):$(SUPPORT_FIRECLOUD_DIR)/bin:/usr/local/support-firecloud/venv/bin
 export PATH
 
 # makefile-folder node_modules exebutables
