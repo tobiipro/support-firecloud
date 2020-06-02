@@ -4,24 +4,13 @@ include support-firecloud/repo/mk/core.common.mk
 
 .PHONY: perform-promotion/%
 perform-promotion/%:
-	$(ECHO);
-	$(GIT) remote -v;
-
 	$(eval PROMOTE_CHANNEL := $(shell dirname "$*"))
 	$(eval PROMOTE_BRANCH := $(PROMOTE_CHANNEL))
 	$(eval TAG := $(shell basename "$*"))
 	$(eval TAG_COMMIT := $(shell $(GIT) rev-list -n1 $(TAG)))
 	$(eval GIT_REMOTE=$(shell $(GIT) config branch.master.remote))
 
-	$(ECHO)
-	$(ECHO) PROMOTE_CHANNEL: $(PROMOTE_CHANNEL)
-	$(ECHO) PROMOTE_BRANCH: $(PROMOTE_BRANCH)
-	$(ECHO) TAG: $(TAG)
-	$(ECHO) TAG_COMMIT: $(TAG_COMMIT)
-	$(ECHO) GIT_REMOTE: $(GIT_REMOTE)
-	$(ECHO)
-
-	$(ECHO) "$(SF_PROMOTE_CHANNELS)" | $(GREP) -q -e "\(^\|\s\)$(PROMOTE_CHANNEL)\(\s\|$$\)" || { \
+	$(ECHO) "$(SF_RELEASE_CHANNELS)" | $(GREP) -q -e "\(^\|\s\)$(PROMOTE_CHANNEL)\(\s\|$$\)" || { \
 		$(ECHO_ERR) "$(PROMOTE_CHANNEL) is not a known channel."; \
 		exit 1; \
 	}
