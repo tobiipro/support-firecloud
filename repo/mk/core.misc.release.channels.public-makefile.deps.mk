@@ -46,6 +46,6 @@ perform-promotion/%:
 	$(ECHO) "       Press ENTER to Continue."
 	$(ECHO) "       Press Ctrl+C to Cancel."
 	read -p ""
-	$(GIT) push --no-verify -f $(GIT_REMOTE) \
+	$(GIT) push --no-verify --force-with-lease $(GIT_REMOTE) \
 		$(TAG_COMMIT):refs/heads/$(PROMOTE_BRANCH)
 	$(GIT) fetch
