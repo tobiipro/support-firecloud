@@ -10,7 +10,7 @@ include support-firecloud/repo/mk/core.misc.release.channels.public-makefile.dep
 # ------------------------------------------------------------------------------
 
 SF_RELEASE_CHANNELS := \
-	merlin \
+	canary \
 	stable \
 
 # ------------------------------------------------------------------------------
