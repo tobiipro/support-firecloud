@@ -19,7 +19,7 @@ jq
 rsync
 EOF
 )"
-    brew_install "${BREW_FORMULAE}"
+    brew_install "${BREW_FORMULAE}" || echo_err "Brew install failed, continuing anyway"
     unset BREW_FORMULAE
     echo_done
 fi
