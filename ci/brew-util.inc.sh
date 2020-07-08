@@ -122,7 +122,7 @@ function brew_install() {
                 if [[ "${CI:-}" != "true" ]]; then
                     brew install ${FORMULA}
                 else
-                    brew install --force ${FORMULA} || brew link --force --overwrite ${FORMULA}
+                    brew install --verbose --force ${FORMULA} || brew link --force --overwrite ${FORMULA}
                 fi
                 echo_done
 
@@ -161,7 +161,7 @@ function brew_install() {
         fi
 
         echo_do "brew: Installing ${FORMULA}..."
-        brew install ${FORMULA}
+        brew install --verbose --display-time ${FORMULA}
         echo_done
     done 3< <(echo "$@")
     # see https://github.com/Homebrew/brew/issues/5013
