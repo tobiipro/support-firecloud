@@ -17,3 +17,4 @@ if [[ "${TRAVIS_EVENT_TYPE}" = "cron" ]]; then
     CI_IS_CRON=true
 fi
 CI_TAG=${TRAVIS_TAG:-}
+CI_NODE_VERSION=${CI_NODE_VERSION}

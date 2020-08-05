@@ -47,8 +47,6 @@ SF_ECLINT_FILES_IGNORE += \
 
 endif
 
-CI_NODE_VERSION =
-
 # ------------------------------------------------------------------------------
 
 .PHONY: deps-npm-unmet-peer
@@ -82,29 +80,13 @@ deps-npm-unmet-peer:
 	fi
 
 
-.PHONY: deps-use-node
-deps-use-node:
-	echo "Checking if a node version was specified..."
-	[[ -z "$(CI_NODE_VERSION)" ]] || { \
-		echo "Node version ${CI_NODE_VERSION} requested, installing nvm..."; \
-		curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash; \
-		export NVM_DIR="$$HOME/.nvm"; \
-		[ -s "$$NVM_DIR/nvm.sh" ] && \. "$$NVM_DIR/nvm.sh"; \
-		echo "Installing node version ${CI_NODE_VERSION} ..."; \
-		nvm install ${CI_NODE_VERSION}; \
-	}
-
 .PHONY: deps-npm-ci
-deps-npm-ci: deps-use-node
-	if [[ -z "$(CI_NODE_VERSION)" ]]; then \
-		$(NPM) ci; \
-	else \
-	$(NPM) ci --target=${CI_NODE_VERSION}; \
-	fi
+deps-npm-ci:
+	$(NPM) ci
 
 
 .PHONY: deps-npm-install
-deps-npm-install: deps-use-node
+deps-npm-install:
 	$(eval PACKAGE_JSON_WAS_CHANGED := $(shell $(GIT) diff --exit-code package.json >/dev/null && echo false || echo true))
 	[[ ! -f "package-lock.json" ]] || { \
 		[[ "$$($(NPM) config get package-lock)" = "true" ]] || { \
@@ -112,13 +94,7 @@ deps-npm-install: deps-use-node
 			exit 1; \
 		}; \
 	}
-
-	if [[ -z "$(CI_NODE_VERSION)" ]]; then \
-		$(NPM) install; \
-	else \
-	$(NPM) install --target=${CI_NODE_VERSION}; \
-	fi
-
+	$(NPM) install
 #	convenience. install peer dependencies from babel/eslint firecloud packages
 	[[ ! -f node_modules/babel-preset-firecloud/package.json ]] || \
 		$(SUPPORT_FIRECLOUD_DIR)/bin/npm-install-peer-deps \

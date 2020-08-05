@@ -129,4 +129,36 @@ function sf_ci_run_before_install() {
         echo "  Please run \`./.ci.sh debug\` to activate your debug session !!!"
         echo
     }
+
+    # echo "Checking if a node version was specified..."
+	# [[ -z "${CI_NODE_VERSION}" ]] || { \
+    #     echo "Node version ${CI_NODE_VERSION} requested..."; \
+    #     echo "Removing brews node"
+    #     brew unlink node; \
+    #     brew uninstall node; \
+
+	# 	#echo "Node version ${CI_NODE_VERSION} requested, looking for version in linuxbrew..."; \
+    #     echo "Installing nvm's node"; \
+	# 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash; \
+	# 	export NVM_DIR="$HOME/.nvm"; \
+	# 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; \
+	# 	echo "Installing node version ${CI_NODE_VERSION} ..."; \
+	# 	nvm install ${CI_NODE_VERSION}; \
+	# 	nvm alias default ${CI_NODE_VERSION}; \
+
+    #     # brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/79f9c9639abe1cf3b7dae3823a8e16aee6cd2594/Formula/python@2.rb"
+    #     # brew link --force python@2
+
+    #     # git clone --shallow-since=2018-01-01 https://github.com/Homebrew/linuxbrew-core.git
+    #     # cd linuxbrew-core
+    #     # NODE_BOTTLE_COMMIT=$(git log --grep="update ${CI_NODE_VERSION} bottle" --pretty=format:"%H" Formula/node.rb)
+    #     # if [[ "${NODE_BOTTLE_COMMIT}" = "" ]]; then
+    #     #     echo "No commit for requested node version found!"
+    #     # else
+    #     #     brew install "https://raw.githubusercontent.com/Homebrew/linuxbrew-core/${NODE_BOTTLE_COMMIT}/Formula/node.rb"
+    #     #     brew switch node "${CI_NODE_VERSION}"
+    #     # fi
+    #     # cd -
+    #     # rm -rf linuxbrew-core
+	# }
 }
