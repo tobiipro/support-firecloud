@@ -30,6 +30,7 @@ function apt_install() {
 }
 
 echo_do "aptitude: Updating..."
+rm -rf /var/lib/apt/lists/*
 apt_install "software-properties-common"
 apt-add-repository -y ppa:git-core/ppa
 apt_update
