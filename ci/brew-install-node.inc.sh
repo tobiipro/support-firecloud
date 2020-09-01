@@ -10,8 +10,8 @@ else
     # force node bottle on CI, compiling node fails or takes forever
     NODE_FORMULA=node
     [[ "${CI:-}" != "true" ]] || {
-        cd $(brew --repo homebrew/core)
-        git fetch --depth 1000
+        BREW_CORE_TAP_DIR=$(brew --repo homebrew/core)
+        git -C ${BREW_CORE_TAP_DIR} fetch --depth 1000
         BREW_TEST_BOT=BrewTestBot
         BREW_REPO_SLUG=Homebrew/homebrew-core
         [[ "$(uname -s)" != "Linux" ]] || {
@@ -19,7 +19,7 @@ else
             BREW_REPO_SLUG=Homebrew/linuxbrew-core
         }
         NODE_BOTTLE_COMMIT=$(
-            git log -1 \
+            git -C ${BREW_CORE_TAP_DIR} log -1 \
                 --first-parent \
                 --pretty=format:"%H" \
                 --author ${BREW_TEST_BOT} \
