@@ -29,6 +29,10 @@ else
         )
         [[ "${NODE_BOTTLE_COMMIT}" = "" ]] || \
             NODE_FORMULA="https://raw.githubusercontent.com/${BREW_REPO_SLUG}/${NODE_BOTTLE_COMMIT}/Formula/node.rb"
+        unset BREW_CORE_TAP_DIR
+        unset BREW_REPO_SLUG
+        unset BREW_TEST_BOT
+        unset NODE_BOTTLE_COMMIT
     }
 
     # if we specify a node version via .travis.yml (ignore 'node' because that means latest),
@@ -45,11 +49,13 @@ EOF
 )"
     brew_install "${BREW_FORMULAE}"
     unset BREW_FORMULAE
+    unset NODE_FORMULA
 
     # allow npm upgrade to fail on WSL; fails with EACCESS
     IS_WSL=$([[ -e /proc/version ]] && cat /proc/version | grep -q -e "Microsoft" && echo true || echo false)
     npm install --global --force npm@6 || ${IS_WSL}
     npm install --global json@9
+    unset IS_WSL
 
     echo_done
 
