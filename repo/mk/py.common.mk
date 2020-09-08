@@ -6,6 +6,8 @@ SUPPORT_FIRECLOUD_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))/
 
 include $(SUPPORT_FIRECLOUD_DIR)/repo/mk/generic.common.mk
 
+SF_PY_COMMON_INCLUDES_DEFAULT ?=
+
 SF_PY_COMMON_INCLUDES = $(filter-out $(SF_INCLUDES_IGNORE), $(SF_PY_COMMON_INCLUDES_DEFAULT))
 
 include $(SF_PY_COMMON_INCLUDES)
