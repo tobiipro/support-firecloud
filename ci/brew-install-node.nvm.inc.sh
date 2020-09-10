@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-set -x
 echo_do "brew: Installing NVM packages..."
 
 [ -n "${NVM_DIR:-}" ] || export NVM_DIR=~/.nvm
