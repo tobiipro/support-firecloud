@@ -31,7 +31,8 @@ else
             # NOTE brew has deprecated installing from a URL, but installing from a local file should still work
             # see https://github.com/Homebrew/brew/pull/7660
             # Installing from a URL gives:
-            # Error: Calling Installation of node from a GitHub commit URL is disabled! Use 'brew extract node' to stable tap on GitHub instead.
+            # Error: Calling Installation of node from a GitHub commit URL is disabled!
+            # Use 'brew extract node' to stable tap on GitHub instead.
             RAW_GUC_URL="https://raw.githubusercontent.com"
             NODE_FORMULA_URL="${RAW_GUC_URL}/${BREW_REPO_SLUG}/${NODE_BOTTLE_COMMIT}/Formula/node.rb"
             NODE_FORMULA=$(mktemp -d)/node.rb
