@@ -30,7 +30,7 @@ promote/%: guard-env-GIT_REMOTE ## promote/<env>/<tag> Promote tag to env branch
 		--pretty=format:"%h %ad %s" \
 		--no-decorate \
 		$(GIT_REMOTE)/$(ENV_BRANCH)..$(TAG_COMMIT) | \
-		$(GREP) --color -E "^|break" || true
+		$(GREP) --color -i -E "^|break" || true
 	$(ECHO)
 	$(ECHO_INFO) "Breaking changes ready to be promoted:"
 	$(ECHO)
@@ -41,7 +41,7 @@ promote/%: guard-env-GIT_REMOTE ## promote/<env>/<tag> Promote tag to env branch
 		--pretty=format:"%h %ad %s" \
 		--no-decorate \
 		$(GIT_REMOTE)/$(ENV_BRANCH)..$(TAG_COMMIT) | \
-		$(GREP) --color -E "break" || true
+		$(GREP) --color -i -E "break" || true
 	$(ECHO)
 	$(ECHO) "[Q   ] Still want to promote $(TAG) to $(ENV_BRANCH)?"
 	$(ECHO) "       Press ENTER to Continue."

@@ -29,7 +29,7 @@ perform-promotion/%:
 		--pretty=format:"%h %ad %s" \
 		--no-decorate \
 		$(GIT_REMOTE)/$(PROMOTE_BRANCH)..$(TAG_COMMIT) | \
-		$(GREP) --color -E "^|break" || true
+		$(GREP) --color -i -E "^|break" || true
 	$(ECHO)
 	$(ECHO_INFO) "Breaking changes ready to be promoted:"
 	$(ECHO)
@@ -40,7 +40,7 @@ perform-promotion/%:
 		--pretty=format:"%h %ad %s" \
 		--no-decorate \
 		$(GIT_REMOTE)/$(PROMOTE_BRANCH)..$(TAG_COMMIT) | \
-		$(GREP) --color -E "break" || true
+		$(GREP) --color -i -E "break" || true
 	$(ECHO)
 	$(ECHO) "[Q   ] Still want to promote $(PROMOTE_BRANCH) to $(TAG)?"
 	$(ECHO) "       Press ENTER to Continue."
