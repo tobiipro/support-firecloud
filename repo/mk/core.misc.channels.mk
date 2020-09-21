@@ -36,7 +36,12 @@ include $(SUPPORT_FIRECLOUD_DIR)/repo/mk/core.misc.channels.promote.mk
 
 # ------------------------------------------------------------------------------
 
-SF_CHANNELS_GIT_URL := $(shell $(GIT) remote -v 2>/dev/null | $(GREP) -oP "(?<=\t).+" | $(GREP) -oP ".+(?= \(fetch\))" | $(HEAD) -n1 | $(SED) "s/.git$$/-releases.git/")
+SF_CHANNELS_GIT_URL := $(shell \
+	$(GIT) remote -v 2>/dev/null | \
+	$(GREP) -oP "(?<=\t).+" | \
+	$(GREP) -oP ".+(?= \(fetch\))" | \
+	$(HEAD) -n1 | \
+	$(SED) "s/.git$$/-releases.git/")
 
 SF_CHANNELS_DIR := releases
 
