@@ -57,11 +57,9 @@ show-channel-status:
 	$(ECHO)
 	$(ECHO_INFO) "Current channel status:";
 	$(ECHO)
-	# Because piping git log outputs an exit code 141 it needs to be handled
 	$(GIT) --no-pager log \
+		-20 \
 		--oneline \
 		--graph \
 		--decorate \
-		--all | \
-		$(HEAD) -n 20 | \
-		$(XARGS) -0 $(ECHO) || true
+		--all \
