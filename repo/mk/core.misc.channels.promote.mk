@@ -28,15 +28,15 @@ perform-promotion/%:
 		exit 1; \
 	}
 	$(GIT) fetch
-	$(MAKE) show-channel-status
+	$(ECHO)
+	$(ECHO_INFO) "Current channel status:"
+	$(ECHO)
 	$(GIT) --no-pager log \
-		--color \
+		--oneline \
 		--graph \
-		--date=short \
-		--pretty=format:"%h %ad %s" \
-		--no-decorate \
-		$(GIT_REMOTE)/$(PROMOTE_BRANCH)..$(TAG_COMMIT) | \
-		$(GREP) --color -i -E "break" || true
+		--decorate \
+		--all \
+		$(GIT_REMOTE)/$(PROMOTE_BRANCH)~...$(GIT_REMOTE)/master
 	$(ECHO)
 	$(ECHO) "[Q   ] Still want to promote $(TAG) to $(PROMOTE_BRANCH)?"
 	$(ECHO) "       Press ENTER to Continue."
@@ -48,18 +48,16 @@ perform-promotion/%:
 
 
 .PHONY: view-channels
-view-channels: deps-channels ## View the status of release channels
-	$(MAKE) -C $(SF_CHANNELS_DIR) show-channel-status
-
-
-.PHONY: show-channel-status
-show-channel-status:
-	$(ECHO)
-	$(ECHO_INFO) "Current channel status:";
-	$(ECHO)
-	$(GIT) --no-pager log \
-		-20 \
-		--oneline \
-		--graph \
-		--decorate \
-		--all \
+view-channels: ## View the status of release channels
+	cd $(SF_CHANNELS_DIR) && { \
+		$(GIT) fetch; \
+		$(ECHO) ""; \
+		$(ECHO_INFO) "Current channel status:"; \
+		$(ECHO) ""; \
+		$(GIT) --no-pager log \
+			-20 \
+			--oneline \
+			--graph \
+			--decorate \
+			--all; \
+	}
