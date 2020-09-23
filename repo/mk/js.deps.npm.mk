@@ -116,8 +116,8 @@ deps-npm-install:
 #   causes all sorts of interesting changes to package.json
 	$(GIT) diff --exit-code package.json || [[ "$(PACKAGE_JSON_WAS_CHANGED)" = "true" ]] || { \
 		$(NPM) install; \
-		$(ECHO_INFO) "package.json has changed."; \
-		$(ECHO_INFO) "Please review and commit the changes."; \
+		$(ECHO_ERR) "package.json has changed."; \
+		$(ECHO_ERR) "Please review and commit the changes."; \
 	}
 #	remove extraneous dependencies
 	$(NPM) prune
@@ -176,8 +176,7 @@ deps-npm-prod: deps-npm-$(NPM_CI_OR_INSTALL)
 .PHONY: check-package-json
 check-package-json:
 	$(GIT) diff --exit-code package.json || { \
-		$(ECHO_INFO) "package.json has changed. Please commit your changes."; \
-		if [[ "$(CI)" != "true" ]]; then exit 1; fi \
+		$(ECHO_ERR) "package.json has changed. Please commit your changes."; \
 	}
 
 
@@ -189,7 +188,6 @@ check-package-lock-json: check-package-json
 	if $(GIT_LS) | $(GREP) -q "^package-lock.json$$"; then \
 		$(GIT) diff --exit-code package-lock.json || { \
 			$(ECHO_ERR) "package-lock.json has changed. Please commit your changes."; \
-			exit 1; \
 		}; \
 		diff \
 			<($(GIT) show $(PACKAGE_LOCK_JSON_HASH):package.json | $(JQ) -S $(JQ_EXPR)) \
