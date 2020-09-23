@@ -30,13 +30,16 @@ function apt_install() {
 }
 
 if [[ "${FORCE_GIT_PPA:-}" = "true" ]]; then
-    echo_do "aptitude: Updating..."
+    echo_do "aptitude: Adding git ppa"
     rm -rf /var/lib/apt/lists/*
     apt_install "software-properties-common"
     apt-add-repository -y ppa:git-core/ppa
-    apt_update
     echo_done
 fi
+
+echo_do "aptitude: Updating..."
+    apt_update
+echo_done
 
 if [[ "${FORCE_LOCALES:-}" = "true" ]]; then
     apt_install locales
