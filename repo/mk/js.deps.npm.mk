@@ -112,11 +112,12 @@ deps-npm-install:
 		$(NPX) sort-package-json; \
 	fi
 #	check that installing peer dependencies didn't modify package.json
+#   however we can no longer abort here because migrating to pnpm
+#   causes all sorts of interesting changes to package.json
 	$(GIT) diff --exit-code package.json || [[ "$(PACKAGE_JSON_WAS_CHANGED)" = "true" ]] || { \
 		$(NPM) install; \
 		$(ECHO_INFO) "package.json has changed."; \
 		$(ECHO_INFO) "Please review and commit the changes."; \
-		if [[ "$(CI)" != "true" ]]; then exit 1; fi \
 	}
 #	remove extraneous dependencies
 	$(NPM) prune
