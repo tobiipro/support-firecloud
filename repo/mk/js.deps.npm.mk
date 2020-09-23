@@ -13,8 +13,16 @@
 #
 # ------------------------------------------------------------------------------
 
-NPM = $(call which,NPM,npm)
+# Default to pnpm on linux and FORCE_NPM is not set.
+ifeq ($(OS)-$(FORCE_NPM),linux-)
+    NPM = $(call which,NPM,pnpm)
+else
+    NPM = $(call which,NPM,npm)
+endif
 $(foreach VAR,NPM,$(call make-lazy,$(VAR)))
+
+NPX = $(call which,NPX,npx)
+$(foreach VAR,NPX,$(call make-lazy,$(VAR)))
 
 NPM_CI_OR_INSTALL := install
 ifeq (true,$(CI))
@@ -102,12 +110,10 @@ deps-npm-install:
 	[[ ! -f node_modules/eslint-config-firecloud/package.json ]] || \
 		$(SUPPORT_FIRECLOUD_DIR)/bin/npm-install-peer-deps \
 			node_modules/eslint-config-firecloud/package.json
-#	hack. sort dependencies in package.json
-	if $(CAT) package.json | $(GREP) -q "\"dependencies\""; then \
-		$(NPM) remove --save-prod some-pkg-that-doesnt-exist; \
-	fi
-	if $(CAT) package.json | $(GREP) -q "\"devDpendencies\""; then \
-		$(NPM) remove --save-dev some-pkg-that-doesnt-exist; \
+#	sort package.json
+	if $(CAT) package.json | $(GREP) -q "\"dependencies\"" || \
+       $(CAT) package.json | $(GREP) -q "\"devDependencies\""; then \
+		$(NPX) sort-package-json; \
 	fi
 #	check that installing peer dependencies didn't modify package.json
 	$(GIT) diff --exit-code package.json || [[ "$(PACKAGE_JSON_WAS_CHANGED)" = "true" ]] || { \

@@ -8,5 +8,5 @@ fi
 echo "Brewfile.inc.sh: CALLING install-${SF_CI_BREW_INSTALL}.inc.sh"
 source ${SUPPORT_FIRECLOUD_DIR}/ci/install-${SF_CI_BREW_INSTALL}.inc.sh
 
-echo "Brewfile.inc.sh: CALLING brew-install-node.inc.sh"
-source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-node.inc.sh
+echo "Brewfile.inc.sh: CALLING install-node.inc.sh"
+source ${SUPPORT_FIRECLOUD_DIR}/ci/install-node.inc.sh
