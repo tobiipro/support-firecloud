@@ -29,7 +29,7 @@ PATH_NPM := $(MAKE_PATH)/node_modules/.bin
 # repository node_modules executables
 PATH_NPM := $(PATH_NPM):$(GIT_ROOT)/node_modules/.bin
 # Finally look here for globally installed npm tools.
-PATH_NPM := $(HOME)/.npm-global/bin
+PATH_NPM := $(PATH_NPM):$(HOME)/.npm-global/bin
 
 define npm-which
 $(shell \
@@ -44,7 +44,7 @@ NODE_NPM = $(shell $(REALPATH) $(NODE) | $(SED) "s/bin\/node\$$/libexec\/npm\/bi
 NODE_NPX = $(shell $(REALPATH) $(NODE) | $(SED) "s/bin\/node\$$/libexec\/npm\/bin\/npx/")
 NPM = $(call which,NPM,npm)
 NPX = $(call which,NPX,npx)
-PNPM = $(call which,PNPM,pnpm)
+PNPM = $(call npm-which,PNPM,pnpm)
 $(foreach VAR,NODE NODE_ESM NODE_NPM NODE_NPX NPM NPX,$(call make-lazy,$(VAR)))
 
 PKG_NAME ?= $(shell $(CAT) package.json | $(JQ) -r ".name")
