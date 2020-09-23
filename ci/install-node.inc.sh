@@ -6,16 +6,21 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
     echo_skip "bootstrap: Installing NodeJS packages..."
 else
     if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
-        echo_do "curl: Installing NodeJS packages..."
-        NODE_SETUP=$(mktemp -d)/node_setup_14.x
-        curl -fsSL "https://deb.nodesource.com/setup_14.x" -o ${NODE_SETUP}
-        # This will install /etc/apt/sources.list.d/nodesource.list
-        # and nodes public verification key.
-        sudo bash ${NODE_SETUP}
-        # Now we can install the latest node using apt.
-        sudo apt install -y nodejs
-        # When we have an apt install npm, then we
-        # need to have a user writeable global installation location.
+        if [[ "$SUDO" = "sf_nosudo" ]]; then
+            sf_nosudo("curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -");
+            sf_nosudo("sudo apt install nodejs");
+        else
+            echo_do "curl: Installing NodeJS packages..."
+            NODE_SETUP=$(mktemp -d)/node_setup_14.x
+            curl -fsSL "https://deb.nodesource.com/setup_14.x" -o ${NODE_SETUP}
+            # This will install /etc/apt/sources.list.d/nodesource.list
+            # and nodes public verification key.
+            ${SUDO} bash ${NODE_SETUP}
+            # Now we can install the latest node using apt.
+            ${SUDO} apt install -y nodejs
+            # When we have an apt install npm, then we
+            # need to have a user writeable global installation location.
+        fi
         export NPM_CONFIG_PREFIX=~/.npm-global
         export PATH=$PATH:~/.npm-global/bin
         echo_done
