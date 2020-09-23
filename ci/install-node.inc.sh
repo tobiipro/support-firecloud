@@ -7,8 +7,13 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
 else
     if [[ "$OS" = "linux" ]] && [[ "${FORCE_BREW:-}" != "true" ]]; then
         if [[ "$SUDO" = "sf_nosudo" ]]; then
-            sf_nosudo("curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -");
-            sf_nosudo("sudo apt install nodejs");
+            echo_info "[ERR ] sudo required, but not available for running the following commands:"
+            echo_info 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
+            echo_info 'sudo apt install nodejs'
+            echo_info "[Q   ] Run the commands yourself as root, then continue."
+            echo_info "       Press ENTER to Continue."
+            echo_info "       Press Ctrl-C to Cancel."
+            read -p ""
         else
             echo_do "curl: Installing NodeJS packages..."
             NODE_SETUP=$(mktemp -d)/node_setup_14.x
