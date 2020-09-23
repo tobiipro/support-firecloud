@@ -48,7 +48,12 @@ if [[ "${FORCE_LOCALES:-}" = "true" ]]; then
     echo locales: regenerated and reconfigured locales...
 fi
 
-echo_info locales: LANG=$LANG
+if [[ "${LANG:-}" = "" ]]; then
+    echo_info locales: LANG not set, defaulting to en_US.UTF8
+    export LANG=en_US.UTF8
+fi
+
+echo_info locales: LANG=${LANG:-}
 
 echo_do "aptitude: Installing basic packages..."
 DPKGS="$(cat <<-EOF
