@@ -114,9 +114,9 @@ deps-npm-install:
 #	check that installing peer dependencies didn't modify package.json
 	$(GIT) diff --exit-code package.json || [[ "$(PACKAGE_JSON_WAS_CHANGED)" = "true" ]] || { \
 		$(NPM) install; \
-		$(ECHO_ERR) "package.json has changed."; \
-		$(ECHO_ERR) "Please review and commit the changes."; \
-		exit 1; \
+		$(ECHO_INFO) "package.json has changed."; \
+		$(ECHO_INFO) "Please review and commit the changes."; \
+		if [[ "$(CI)" != "true" ]]; then exit 1; fi \
 	}
 #	remove extraneous dependencies
 	$(NPM) prune
