@@ -86,6 +86,13 @@ EOF
     fi
 fi
 
+if [[ "$(which nvm)" != "" ]]
+then
+    # Nvm is already installed, lets switch to the system installed node
+    # hopefully the version installed above.
+    nvm use system
+fi
+
 # allow npm upgrade to fail on WSL; fails with EACCESS
 IS_WSL=$([[ -e /proc/version ]] && cat /proc/version | grep -q -e "Microsoft" && echo true || echo false)
 npm install --global --force npm@6 || ${IS_WSL}
