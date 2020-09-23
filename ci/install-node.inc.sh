@@ -11,9 +11,13 @@ else
         curl -fsSL "https://deb.nodesource.com/setup_14.x" -o ${NODE_SETUP}
         # This will install /etc/apt/sources.list.d/nodesource.list
         # and nodes public verification key.
-        sudo bash $(NODE_SETUP)
+        sudo bash ${NODE_SETUP}
         # Now we can install the latest node using apt.
         sudo apt install -y nodejs
+        # When we have an apt install npm, then we
+        # need to have a user writeable global installation location.
+        export NPM_CONFIG_PREFIX=~/.npm-global
+        export PATH=$PATH:~/.npm-global/bin
         echo_done
     else
         echo_do "brew: Installing NodeJS packages..."
@@ -79,7 +83,7 @@ fi
 # allow npm upgrade to fail on WSL; fails with EACCESS
 IS_WSL=$([[ -e /proc/version ]] && cat /proc/version | grep -q -e "Microsoft" && echo true || echo false)
 npm install --global --force npm@6 || ${IS_WSL}
-npm install --global json@9
+npm install --global json@10
 npm install --global pnpm@5
 unset IS_WSL
 
@@ -89,5 +93,5 @@ exe_and_grep_q "node --version | head -1" "^v"
 exe_and_grep_q "npm --version | head -1" "^6\."
 exe_and_grep_q "npx --version | head -1" "^6\."
 exe_and_grep_q "pnpm --version | head -1" "^5\."
-exe_and_grep_q "json --version | head -1" "^json 9\."
+exe_and_grep_q "json --version | head -1" "^json 10\."
 echo_done

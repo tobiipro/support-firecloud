@@ -17,8 +17,20 @@ source ${GLOBAL_SUPPORT_FIRECLOUD_DIR}/sh/exe-env.inc.sh
 source ${GLOBAL_SUPPORT_FIRECLOUD_DIR}/sh/aws-iam-login.inc.sh
 
 path_prepend ${GLOBAL_SUPPORT_FIRECLOUD_DIR}/dev/bin
+
+# Run locally installed npm programs.
 path_append ./node_modules/.bin
+
 # remove old symlink if possible
 rm /usr/local/bin/node-esm 2>/dev/null || true
+
+# Run globally installed npm programs.
+if [ "$(which npm)" = "/usr/bin/npm" ]; then
+    # When we have an apt install npm, then we
+    # need to have a user writeable global installation location.
+    # Lets do this by using this directory
+    NPM_CONFIG_PREFIX=~/.npm-global
+    path_append ~/.npm-global/bin
+fi
 
 export SF_DEV_INC_SH=true

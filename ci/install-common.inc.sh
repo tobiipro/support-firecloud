@@ -7,6 +7,6 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
 else
     echo_do "bootstrap: Installing common packages..."
     source ${SUPPORT_FIRECLOUD_DIR}/ci/install-minimal.inc.sh
-    source ${SUPPORT_FIRECLOUD_DIR}/ci/brew-install-node.inc.sh
+    source ${SUPPORT_FIRECLOUD_DIR}/ci/install-node.inc.sh
     echo_done
 fi

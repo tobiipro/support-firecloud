@@ -29,29 +29,24 @@ function apt_install() {
     done 3< <(echo "$@")
 }
 
-echo_do "aptitude: Updating..."
-rm -rf /var/lib/apt/lists/*
-apt_install "software-properties-common"
-apt-add-repository -y ppa:git-core/ppa
-apt_update
-echo_done
+if [[ "${FORCE_GIT_PPA:-}" = "true" ]]; then
+    echo_do "aptitude: Updating..."
+    rm -rf /var/lib/apt/lists/*
+    apt_install "software-properties-common"
+    apt-add-repository -y ppa:git-core/ppa
+    apt_update
+    echo_done
+fi
 
-apt_install locales
-locale-gen en_US en_US.UTF-8
-dpkg-reconfigure --frontend=noninteractive locales
+if [[ "${FORCE_LOCALES:-}" = "true" ]]; then
+    apt_install locales
+    locale-gen en_US en_US.UTF-8
+    dpkg-reconfigure --frontend=noninteractive locales
+    echo locales: regenerated and reconfigured locales...
+fi
 
-# improve date-time (ntp) sync
-(
-    # see https://bugs.launchpad.net/ubuntu/+source/tzdata/+bug/1773687
-    ln -sf /usr/share/zoneinfo/UTC /etc/localtime
-    apt_install tzdata
-    dpkg-reconfigure --frontend=noninteractive tzdata
+echo locales: LANG=$LANG
 
-    timedatectl set-ntp no
-    apt_install ntp
-) || true
-
-# Basic
 echo_do "aptitude: Installing basic packages..."
 DPKGS="$(cat <<-EOF
 bash

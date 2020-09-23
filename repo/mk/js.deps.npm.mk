@@ -13,8 +13,16 @@
 #
 # ------------------------------------------------------------------------------
 
+FORCE_NPM?=false
+
+ifeq ($(call which,NPM,npm),/usr/bin/npm)
+    ifeq ($(NPM_CONFIG_PREFIX),)
+        $(error Your npm is in /usr/bin, you need to do: export NPM_CONFIG_PREFIX=~/.npm-global)
+    endif
+endif
+
 # Default to pnpm on linux and FORCE_NPM is not set.
-ifeq ($(OS)-$(FORCE_NPM),linux-)
+ifeq ($(OS)-$(FORCE_NPM),linux-false)
     NPM = $(call which,NPM,pnpm)
 else
     NPM = $(call which,NPM,npm)
