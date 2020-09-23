@@ -1,8 +1,7 @@
 {
   "name": "support-firecloud",
-  "version": "0.2.51",
-  "private": true,
   "description": "Software and configuration that support TobiiPro's Cloud Services development.",
+  "version": "0.2.52",
   "license": "Apache-2.0",
   "devDependencies": {
     "@getify/eslint-plugin-proper-arrows": "^8.0.1",
