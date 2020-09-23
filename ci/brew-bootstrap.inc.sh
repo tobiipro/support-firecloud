@@ -55,12 +55,12 @@ case $(uname -s) in
                     tar xz --strip 1 -C ${HOMEBREW_PREFIX}
                 echo_done
             else
-                </dev/null sh -c "$(curl -fqsS -L ${RAW_GUC_URL}/Linuxbrew/install/master/install.sh)"
+                </dev/null bash -c "$(curl -fqsS -L ${RAW_GUC_URL}/Homebrew/install/master/install.sh)"
             fi
             echo_done
         fi
 
-        CI_CACHE_HOMEBREW_PREFIX=~/.linuxbrew
+        CI_CACHE_HOMEBREW_PREFIX=~/.homebrew
         ;;
     *)
         echo_err "brew: $(uname -s) is an unsupported OS."

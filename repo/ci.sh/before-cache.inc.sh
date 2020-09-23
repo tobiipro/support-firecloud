@@ -11,7 +11,7 @@ function sf_ci_run_before_cache_brew() {
             CI_CACHE_HOMEBREW_PREFIX=~/.homebrew
             ;;
         Linux)
-            CI_CACHE_HOMEBREW_PREFIX=~/.linuxbrew
+            CI_CACHE_HOMEBREW_PREFIX=~/.homebrew
             ;;
         *)
             echo_err "${FUNCNAME[0]}: $(uname -s) is an unsupported OS."

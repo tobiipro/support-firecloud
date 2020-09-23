@@ -29,10 +29,6 @@ else
             git -C ${BREW_CORE_TAP_DIR} fetch --depth 1000
             BREW_TEST_BOT=BrewTestBot
             BREW_REPO_SLUG=Homebrew/homebrew-core
-            [[ "$(uname -s)" != "Linux" ]] || {
-                BREW_TEST_BOT=LinuxbrewTestBot
-                BREW_REPO_SLUG=Homebrew/linuxbrew-core
-            }
             NODE_BOTTLE_COMMIT=$(
                 git -C ${BREW_CORE_TAP_DIR} log -1 \
                     --first-parent \
