@@ -175,8 +175,8 @@ deps-npm-prod: deps-npm-$(NPM_CI_OR_INSTALL)
 .PHONY: check-package-json
 check-package-json:
 	$(GIT) diff --exit-code package.json || { \
-		$(ECHO_ERR) "package.json has changed. Please commit your changes."; \
-		exit 1; \
+		$(ECHO_INFO) "package.json has changed. Please commit your changes."; \
+		if [[ "$(CI)" != "true" ]]; then exit 1; fi \
 	}
 
 
