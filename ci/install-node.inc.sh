@@ -47,7 +47,7 @@ else
                     --grep update \
                     --grep bottle \
                     Formula/node.rb
-                              )
+            )
             if [[ -n "${NODE_BOTTLE_COMMIT}" ]]; then
                 # NOTE brew has deprecated installing from a URL, but installing from a local file should still work
                 # see https://github.com/Homebrew/brew/pull/7660

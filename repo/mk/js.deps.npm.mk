@@ -17,7 +17,7 @@ FORCE_NPM?=false
 
 # Default to pnpm on linux and FORCE_NPM is not set.
 ifeq ($(OS)-$(FORCE_NPM),linux-false)
-    NPM := $(PNPM)
+	NPM := $(PNPM)
 endif
 
 NPM_CI_OR_INSTALL := install
@@ -108,7 +108,7 @@ deps-npm-install:
 			node_modules/eslint-config-firecloud/package.json
 #	sort package.json
 	if $(CAT) package.json | $(GREP) -q "\"dependencies\"" || \
-       $(CAT) package.json | $(GREP) -q "\"devDependencies\""; then \
+		$(CAT) package.json | $(GREP) -q "\"devDependencies\""; then \
 		$(NPX) sort-package-json; \
 	fi
 #	check that installing peer dependencies didn't modify package.json
