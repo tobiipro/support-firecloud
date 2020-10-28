@@ -8,7 +8,11 @@ else
     echo_do "brew: Installing NodeJS packages..."
 
     brew_install icu4c
-    brew uses --installed icu4c | xargs -L1 brew reinstall
+    brew uses --installed icu4c | while read FORMULA; do
+        brew uninstall --ignore-dependencies ${FORMULA};
+	brew install ${FORMULA}
+    done
+    unset FORMULA
 
     # force node bottle on CI, compiling node fails or takes forever
     NODE_FORMULA=node
