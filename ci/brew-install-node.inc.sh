@@ -7,6 +7,9 @@ if [[ "${SF_SKIP_COMMON_BOOTSTRAP:-}" = "true" ]]; then
 else
     echo_do "brew: Installing NodeJS packages..."
 
+    brew_install icu4c
+    brew uses --installed icu4c | xargs -L1 brew reinstall
+
     # force node bottle on CI, compiling node fails or takes forever
     NODE_FORMULA=node
     [[ "${CI:-}" != "true" ]] || {
