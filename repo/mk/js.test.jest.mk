@@ -16,7 +16,7 @@ $(foreach VAR,JEST,$(call make-lazy,$(VAR)))
 JEST_ARGS += \
 
 SF_JEST_TEST_FILES += \
-	$(shell $(FIND_Q_NOSYM) test -type f -name "*.test.js" -print) \
+	$(shell $(FIND_Q_NOSYM) test src -type f \( -name "*.test.js" -o -name "*.spec.ts" \) -print) \
 
 SF_VENDOR_FILES_IGNORE += \
 	-e "/__mocks__/" \
