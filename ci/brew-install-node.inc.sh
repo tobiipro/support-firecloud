@@ -58,15 +58,31 @@ else
 ${NODE_FORMULA}
 EOF
 )"
-    brew_install "${BREW_FORMULAE}"
+    # Brew updated node to 15 which was incompatible with SF,
+    # so there was a workaround to install node 14 from a local formulae and
+    # brew switch to it.
+    # see https://github.com/Homebrew/homebrew-core/pull/63410
+    #
+    # Recently brew also disabled the switch command however,
+    # see https://github.com/Homebrew/discussions/discussions/339
+    # so the workaround which unlinked whatever version node installed and
+    # switched to the local formulae doesn't work any more either.
+    #
+    # So now the workaround is to only install from the local formulae so we
+    # dont need to do any unlinking or switching.
+    #
+    # This locks our node version to 14 however...
+    # --------------------------------------------------------------------------
+
+    # TODO: Put this back into effect whenever the node version is actually okay
+    # brew_install "${BREW_FORMULAE}"
     unset BREW_FORMULAE
     unset NODE_FORMULA
 
-    # TODO remove once we can use node@14
-    # see https://github.com/Homebrew/homebrew-core/pull/63410
-    brew unlink node
+    # TODO: Put back the comment above and remove this once we can use node@14
+    # brew unlink node
     brew install ${SUPPORT_FIRECLOUD_DIR}/priv/node.rb || true
-    brew switch node 14.14.0
+    # brew switch node 14.14.0
 
     # allow npm upgrade to fail on WSL; fails with EACCESS
     IS_WSL=$([[ -e /proc/version ]] && cat /proc/version | grep -q -e "Microsoft" && echo true || echo false)
