@@ -20,7 +20,7 @@ if [[ "${GITHUB_EVENT_NAME}" = "" ]]; then
     CI_IS_PR=true
 fi
 CI_TAG=
-if [[ "${GITHUB_REF:-}" =~ "^refs/tags/" ]]; then
+if [[ "${GITHUB_REF:-}" =~ ^refs/tags/ ]]; then
     CI_TAG=${GITHUB_REF#refs\/tags\/}
 fi
 export CI=true
