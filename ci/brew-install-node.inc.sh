@@ -11,7 +11,7 @@ else
     NODE_FORMULA=node
     [[ "${CI:-}" != "true" ]] || {
         BREW_CORE_TAP_DIR=$(brew --repo homebrew/core)
-        git -C ${BREW_CORE_TAP_DIR} fetch --depth 1000
+        git -C ${BREW_CORE_TAP_DIR} fetch --unshallow
         BREW_TEST_BOT=BrewTestBot
         BREW_REPO_SLUG=Homebrew/homebrew-core
         [[ "$(uname -s)" != "Linux" ]] || {
