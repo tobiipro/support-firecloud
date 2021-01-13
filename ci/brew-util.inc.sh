@@ -11,6 +11,12 @@ function brew_update() {
     case "$" in
     esac
 
+    # Brew is now blocking shallow homebrew/core fetches per Github's request
+    # see https://github.com/Homebrew/brew/issues/9420
+    BREW_CORE_TAP_DIR=$(brew --repo homebrew/core)
+    git -C ${BREW_CORE_TAP_DIR} fetch --unshallow
+    unset BREW_CORE_TAP_DIR
+
     if brew update > $tmpfile 2>&1
     then
         rm $tmpfile
