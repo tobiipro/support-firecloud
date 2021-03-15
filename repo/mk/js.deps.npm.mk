@@ -186,8 +186,8 @@ check-package-json:
 
 .PHONY: check-package-lock-json
 check-package-lock-json: check-package-json
-	$(eval PACKAGE_JSON_HASH := $(shell $(GIT) log -1 --format='%h' -- package.json))
-	$(eval PACKAGE_LOCK_JSON_HASH := $(shell $(GIT) log -1 --format='%h' -- package-lock.json))
+	$(eval PACKAGE_JSON_HASH := $(shell $(GIT) rev-list -1 $(GIT_BRANCH) package.json))
+	$(eval PACKAGE_LOCK_JSON_HASH := $(shell $(GIT) rev-list -1 $(GIT_BRANCH) package-lock.json))
 	$(eval JQ_EXPR := "{a: .name, b: .version, c: .dependencies, d: .devDependencies}")
 	if $(GIT_LS) | $(GREP) -q "^package-lock.json$$"; then \
 		$(GIT) diff --exit-code package-lock.json || { \
