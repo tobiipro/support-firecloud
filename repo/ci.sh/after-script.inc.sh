@@ -15,6 +15,8 @@ function sf_ci_run_after_script_upload_job_artifacts() {
 
     local JOB_GIT_REF=refs/jobs/${CI_JOB_ID}
 
+    local CURRENT_BRANCH=$(git branch --show-current)
+
     git checkout --orphan jobs/${CI_JOB_ID}
     git ls-files -- "*/.gitignore" | xargs -r -L1 rm -f
     git reset -- .
@@ -53,7 +55,7 @@ EOF
     # Upload to git refs/job/<job_id>
     git push --no-verify -f https://${GH_TOKEN}@github.com/${CI_REPO_SLUG}.git HEAD:${JOB_GIT_REF} || true
 
-    git checkout -f -
+    git checkout -f ${CURRENT_BRANCH}
 
     echo_done
 
