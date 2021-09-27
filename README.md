@@ -1,3 +1,4 @@
+# This has been DEPRECATED; use [build-support](https://github.com/tobiipro/build-support) in new projects instead
 # support-firecloud
 
 * Travis CI: [![Travis CI Status][2]][1]
